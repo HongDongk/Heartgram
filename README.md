@@ -1,2 +1,4 @@
 # Heartgram
- FristProject
+  ✔ Dongkeun
+  ✔ FrontEnd : NextJs  
+  ✔ BackEnd  : NodeJS / MySql
