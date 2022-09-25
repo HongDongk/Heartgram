@@ -1,4 +1,4 @@
 # Heartgram
-  ✔ Dongkeun
+  ✔ Dongkeun  
   ✔ FrontEnd : NextJs  
   ✔ BackEnd  : NodeJS / MySql
