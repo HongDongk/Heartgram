@@ -1,3 +1,3 @@
 # HeartGram  
   ✔ FrontEnd : NextJs  
-  ✔ BackEnd  : NodeJS / MySql
+  ✔ BackEnd  : NodeJS & MySql
