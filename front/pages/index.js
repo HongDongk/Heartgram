@@ -1,6 +1,10 @@
+import AppLayout from "../components/AppLayout"
+import styled from 'styled-components';
+import Loginform from "../components/Loginform";
+
 const Home = () => {
     return (
-        <div>Hello!!</div>
+       <Loginform/>
     )
 
 }
