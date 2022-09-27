@@ -84,9 +84,10 @@ const FormWrapper=styled(Form)`
 const SInput=styled(Input)`
     width:250px;
     border-radius:6px;  
+    margin-top:10px;
 `;
 const Submit=styled(Button)`
-    margin-top:22px;
+    margin-top:35px;
     width:250px;
     border-radius:6px;
     font-weight:500;

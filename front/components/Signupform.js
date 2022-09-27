@@ -123,12 +123,11 @@ const Info = styled.div`
 `;
 const FormWrapper=styled(Form)`
     width:300px;
-    margin-top:20px;
+    margin-top:17px;
     display:flex;
     flex-wrap: wrap;
     justify-content:center;
 `;
-
 const SInput=styled(Input)`
     margin-top:10px;
     width:250px;
@@ -140,19 +139,16 @@ const Submit=styled(Button)`
     border-radius:6px;
     font-weight:500;
 `;
-
 const Check=styled.div`
     margin-top:13px;
     width:245px;
 `;
-
 const Box=styled.div`
     margin-top:15px;
     display:flex;
     justify-content:center;  
     height:40px; 
 `;
-
 const ErrorMessage = styled.div`
   color: red;
 `;

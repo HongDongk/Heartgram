@@ -10,7 +10,7 @@ const Signup = () => {
     return(
        <AppLayout>
             <Head>
-                <title>회원가입 | HeartGram❤</title>
+                <title>회원가입 | HeartGram</title>
             </Head>
             <Main>
                 <Signupform/>

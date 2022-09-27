@@ -8,7 +8,7 @@ function HeartGram({ Component }) {
     <>
         <Head>
           <meta charSet="utf-8" />
-          <title>HeartGram ❤</title>
+          <title>HeartGram</title>
         </Head>
         
         <Component />
