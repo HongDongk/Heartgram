@@ -6,12 +6,13 @@ import 'antd/dist/antd.css';
 function HeartGram({ Component }) {
   return (
     <>
-      <Head>
-        <meta charSet="utf-8" />
-        <title>HeartGram ❤</title>
-      </Head>
+        <Head>
+          <meta charSet="utf-8" />
+          <title>HeartGram ❤</title>
+        </Head>
+        
+        <Component />
       
-      <Component />
     </>
   );
 }
