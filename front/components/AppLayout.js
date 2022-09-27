@@ -1,26 +1,34 @@
-import React, { useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types'
 import Link from 'next/link';
-import styled from 'styled-components';
-import { Menu, Input } from 'antd';
+import styled, { createGlobalStyle }  from 'styled-components';
+
+const Global = createGlobalStyle`
+    a {
+        color: #696969;
+        text-decoration: none;
+        font-weight:bold;
+    }
+`;
 
 
-const AppLayout = () => {
+const AppLayout = ({ children }) => {
     
     return (
-        <Header>
-            <Menuu mode="horizontal">
-                <Menu.Item key="home"><Link href="/"><a>HeartGram</a></Link></Menu.Item>
-                <Menu.Item key="profile"><Link href="/profile"><a>Profile</a></Link></Menu.Item>
-                <Menu.Item key="aboutme"><Link href="/aboutme"><a>About me</a></Link></Menu.Item>
-                <Menu.Item key="aboutme"><Link href="/aboutme"><a>About me</a></Link></Menu.Item>
-                <Menu.Item key="mail">
-                    <Input.Search enterButton style={{ verticalAlign: 'middle' }} />
-                </Menu.Item>
-            </Menuu>
-        </Header>
-        
-     
+        <Content>
+            <Global/>
+            {children}
+            <Footer>
+                <div><a href="https://blog.naver.com/hongdongk" target="_blank" rel="noreferrer noopener">Blog</a></div>
+                <div><a href="https://github.com/HongDongk" target="_blank" rel="noreferrer noopener">GitHub</a></div>
+                <div><Link href="/aboutme"><a>About me</a></Link></div>
+                <Info>
+                    <div>Made By Dongkeun</div>
+                    <div>© 2022 Update from DK</div>
+                </Info>      
+            </Footer>
+        </Content>
+       
     );
 };
 
@@ -30,19 +38,30 @@ AppLayout.propTypes = {
 
 export default AppLayout;
 
-const Header = styled.div`
-    width:100vw;
-    display: flex;
+const Content = styled.div`
+    display:flex;
     justify-content:center;
+    align-items: flex-end;
+    flex-wrap: wrap;
+    height:100vh;
+    background-color: #E6E6FA;
+`;
 
-`
-const Menuu = styled(Menu)`
+const Footer = styled.div`
+    margin-bottom:50px;
+    width:450px;
+    padding: 0 60px;
+    flex-wrap: wrap;
+    display:flex;
+    justify-content:center;
+    justify-content:space-between;
+`;
+
+const Info = styled.div`
+    margin-top:15px;
     width:100%;
-    display: flex;
+    display:flex;
     justify-content:center;
     justify-content:space-around;
-    font-weight:bold;
-`
-
-const Search = styled(Input)`
-`
+    color: #696969;
+`;
