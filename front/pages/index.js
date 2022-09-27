@@ -22,7 +22,7 @@ export default Home;
 
 const Main = styled.div`
     width:80%;
-    padding:0 10%;
+    padding:0 16%;
     display:flex;
     justify-content:center;
     justify-content:space-around;
