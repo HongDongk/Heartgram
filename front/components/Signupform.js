@@ -3,6 +3,7 @@ import useInput from '../hooks/useInput';
 import styled from 'styled-components';
 import Link from 'next/link';
 import { Form, Input, Checkbox, Button } from 'antd'
+import Router from "next/router";
 
 
 const Signupform = () => {
@@ -32,7 +33,8 @@ const Signupform = () => {
         if (!term) {
             return setTermError(true);
         }
-        console.log(email, nickname, password);
+        window.alert("회원가입이 완료되었습니다!");
+        Router.push("/");
     }, [email, password, passwordCheck, term]);
 
 
@@ -86,9 +88,9 @@ const Signupform = () => {
                     <Checkbox name="user-term" checked={term} onChange={onChangeTerm}>Dongkeun을 기억해주세요</Checkbox>
                     {termError && <ErrorMessage>약관에 동의하셔야 합니다.</ErrorMessage>}
                 </Check>
-                <div><Submit type="primary" htmlType="submit">Login</Submit></div>       
+                <div><Submit type="primary" htmlType="submit">SignUp</Submit></div>       
             </FormWrapper>
-            <Box><div>Have an account? &nbsp;&nbsp;&nbsp;&nbsp;</div><Link href="/"><a>Login</a></Link></Box>
+            <Box><div>Have an account? &nbsp;&nbsp;&nbsp;&nbsp;</div><Link href="/"><a>Log In</a></Link></Box>
         </Content>
     );  
 }

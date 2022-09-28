@@ -3,6 +3,7 @@ import { Form, Input, Button } from 'antd';
 import useInput from '../hooks/useInput';
 import styled from 'styled-components';
 import Link from 'next/link';
+import Router from "next/router";
 
 
 const Loginform = () => {
@@ -12,6 +13,7 @@ const Loginform = () => {
 
     const onSubmitForm = useCallback(() => {
         console.log(email, password);
+        Router.push("/main");
     }, [email, password]);
 
 
