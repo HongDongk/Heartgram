@@ -36,21 +36,17 @@ const TopMenu = () => {
     );
 };
 
-TopMenu.propTypes = {
-    children: PropTypes.node.isRequired,
-};
-
 export default TopMenu;
 
 const Top = styled.div`
     width:100vw;
     height:70px;
-    padding: 0 25%;
+    padding: 0 20%;
     display:flex;
     justify-content:center;
     justify-content:space-between;
     align-items:center;
-    background-color:#E6E6FA;
+    background-color: whitesmoke;
     border-bottom: 1px solid #DCDCDC;
 `;
 
@@ -60,12 +56,12 @@ const TopItem = styled.div`
 
 const SearchBox = styled(Input.Search)`
     width:300px;
-    bordered: 8px;
     
 `;
 
 const Util = styled.div`
-    width:18%;
+    width:16%;
+    min-width:150px;
     display:flex;
     justify-content:center;
     justify-content:space-between;

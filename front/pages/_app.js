@@ -3,22 +3,22 @@ import PropTypes from 'prop-types';
 import Head from 'next/head';
 import 'antd/dist/antd.css';
 
-function HeartGram({ Component }) {
+import wrapper from '../store/configureStore';
+
+const HeartGram = ({ Component }) => {
   return (
     <>
-        <Head>
-          <meta charSet="utf-8" />
-          <title>HeartGram</title>
-        </Head>
-        
-        <Component />
-      
+      <Head>
+        <meta charSet="utf-8" />
+        <title>HeartGram</title>
+      </Head>  
+      <Component />     
     </>
   );
-}
+};
 
 HeartGram.propTypes = {
   Component: PropTypes.elementType.isRequired,
 };
 
-export default HeartGram;
+export default wrapper.withRedux(HeartGram);

@@ -1,18 +1,27 @@
 import { useCallback } from 'react';
 import { Form, Input, Button } from 'antd';
-import useInput from '../hooks/useInput';
+import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import Link from 'next/link';
 import Router from "next/router";
 
+import useInput from '../hooks/useInput';
+import { LOG_IN_REQUEST } from '../reducers/user';
+
 
 const Loginform = () => {
 
+    const dispatch = useDispatch();
+    
+    const { logInLoading } = useSelector((state) => state.user);
     const [email, onChangeEmail] = useInput('');
     const [password, onChangePassword] = useInput('');
 
     const onSubmitForm = useCallback(() => {
-        console.log(email, password);
+        dispatch({
+            type: LOG_IN_REQUEST,
+            data: { email, password },
+        });
         Router.push("/main");
     }, [email, password]);
 
@@ -42,7 +51,7 @@ const Loginform = () => {
                     required
                 />
             </div>
-            <div><Submit type="primary" htmlType="submit">Login</Submit></div>       
+            <div><Submit type="primary" htmlType="submit" loading={logInLoading}>Login</Submit></div>       
         </FormWrapper>
         <Box><div>Don't have an account?&nbsp;&nbsp;&nbsp;&nbsp;</div><Link href="/signup"><a>Sign up</a></Link></Box>
     
