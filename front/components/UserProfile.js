@@ -1,13 +1,32 @@
-import React, { useCallback } from 'react';
-import { Button } from 'antd';
+import React, { useCallback , useState } from 'react';
+import { Button, Modal } from 'antd';
 import { useSelector, useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import { PlusCircleOutlined } from '@ant-design/icons';
+
 
 import { LOG_OUT_REQUEST } from '../reducers/user';
 
 const UserProfile = () => {
   
+    const [open, setOpen] = useState(false);
+
+    const showModal = () => {
+        setOpen(true);
+    };
+
+    const handleOk = () => {
+        setLoading(true);
+        setTimeout(() => {
+        setLoading(false);
+        setOpen(false);
+        }, 3000);
+    };
+
+    const handleCancel = () => {
+        setOpen(false);
+    };
+    
     const { me } = useSelector((state) => state.user);
 
     return (
@@ -18,9 +37,14 @@ const UserProfile = () => {
             </Top>
             <Email>{me.email}</Email>
             <Middle>
-                <div><Count>{me.Followings.length}</Count> Posts</div>
-                <div><Count>{me.Followings.length}</Count> following</div>
-                <div><Count>{me.Followers.length}</Count> followers</div>
+                <Sbutton onClick={showModal}><Count>{me.Followings.length}</Count> Posts</Sbutton>
+                <Modal open={open} title="Posts" onOk={handleOk} onCancel={handleCancel} footer={[]}>
+                    <p>{me.Followings.map(a => a.nickname)}</p>
+                </Modal>
+                <Sbutton><Count>{me.Followings.length}</Count> following</Sbutton>
+                
+                <Sbutton><Count>{me.Followers.length}</Count> followers</Sbutton>
+                
             </Middle> 
            
             
@@ -73,6 +97,13 @@ const Middle = styled.div`
     justify-content:space-around;
     width:50%;
 `;
+const Sbutton = styled.div`
+    border: 0;
+    outline: 0;
+    &:hover{  
+        cursor: pointer;
+    }
+`
 const Count = styled.span`
     font-weight:bold;
 `;
