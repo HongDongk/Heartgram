@@ -2,6 +2,7 @@ import React, { useCallback } from 'react';
 import { Button } from 'antd';
 import { useSelector, useDispatch } from 'react-redux';
 import styled from 'styled-components';
+import { PlusCircleOutlined } from '@ant-design/icons';
 
 import { LOG_OUT_REQUEST } from '../reducers/user';
 
@@ -11,16 +12,18 @@ const UserProfile = () => {
 
     return (
         <Profile>
-            <Avatar>{me.nickname}</Avatar>
+            <Avatar>{me.nickname[0]}{me.nickname[1]}</Avatar>
             <Top>
                 <Button>Edit Profile</Button>
             </Top>
-            <Bottom>{me.nickname} {me.email}</Bottom>
+            <Email>{me.email}</Email>
             <Middle>
-                <div>{me.Followings.length} Posts</div>
-                <div>{me.Followings.length}팔로잉</div>
-                <div>{me.Followers.length}팔로워</div>
+                <div><Count>{me.Followings.length}</Count> Posts</div>
+                <div><Count>{me.Followings.length}</Count> following</div>
+                <div><Count>{me.Followers.length}</Count> followers</div>
             </Middle> 
+           
+            
         </Profile>
     );
 };
@@ -28,37 +31,15 @@ const UserProfile = () => {
 export default UserProfile;
 
 const Profile = styled.div`
+    margin-top:50px;
     padding-top:50px;
     display:flex;
     justify-content:center;
     flex-wrap:wrap;
-    width:700px;
-    height:400px;
-    background-color:white;
+    width:650px;
+    height:350px;
+    background-color:whitesmoke;
 `;
-
-const Top= styled.div`
-    display:flex;
-    justify-content:center;
-
-    width:100%;
-    background-color:white;
-`;
-
-const Middle = styled.div`
-    display:flex;
-    justify-content:center;
-    width:500px;
-    background-color:white;
-`;
-
-const Bottom = styled.div`
-    display:flex;
-    justify-content:center;
-    width:700px;
-    background-color:white;
-`;
-
 const Avatar = styled.div`
     display:flex;
     justify-content:center;
@@ -69,6 +50,40 @@ const Avatar = styled.div`
     background-color:gray;
     font-weight:bold;
     font-size:20px;
+    &:hover{  
+        cursor: pointer;
+    }
 `;
+const Top= styled.div`
+    display:flex;
+    justify-content:center;
+    width:100%;
+`;
+const Email =styled.div`
+    width:100%;
+    display:flex;
+    justify-content:center;
+    font-weight:bold;
+`;
+const Middle = styled.div`
+    margin-left:30px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    justify-content:space-around;
+    width:50%;
+`;
+const Count = styled.span`
+    font-weight:bold;
+`;
+
+const Bottom = styled.div`
+    display:flex;
+    justify-content:center;
+    width:700px;
+    background-color:white;
+`;
+
+
 
 
