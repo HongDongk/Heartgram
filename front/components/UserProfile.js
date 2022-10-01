@@ -41,13 +41,15 @@ const UserProfile = () => {
                 <Modal open={open} title="Posts" onOk={handleOk} onCancel={handleCancel} footer={[]}>
                     <p>{me.Followings.map(a => a.nickname)}</p>
                 </Modal>
-                <Sbutton><Count>{me.Followings.length}</Count> following</Sbutton>
-                
-                <Sbutton><Count>{me.Followers.length}</Count> followers</Sbutton>
-                
-            </Middle> 
-           
-            
+                <Sbutton onClick={showModal}><Count>{me.Followings.length}</Count> Following</Sbutton>
+                <Modal open={open} title="Following" onOk={handleOk} onCancel={handleCancel} footer={[]}>
+                    <p>{me.Followings.map(a => a.nickname)}</p>
+                </Modal>       
+                <Sbutton onClick={showModal}><Count>{me.Followers.length}</Count> Followers</Sbutton>
+                <Modal open={open} title="Followers" onOk={handleOk} onCancel={handleCancel} footer={[]}>
+                    <p>{me.Followers.map(a => a.nickname)}</p>
+                </Modal>        
+            </Middle>      
         </Profile>
     );
 };
