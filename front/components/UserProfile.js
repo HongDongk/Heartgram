@@ -4,28 +4,15 @@ import { useSelector, useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import { PlusCircleOutlined } from '@ant-design/icons';
 
-
+import modal from '../hooks/modal';
 import { LOG_OUT_REQUEST } from '../reducers/user';
 
 const UserProfile = () => {
   
-    const [open, setOpen] = useState(false);
+    const [open, showModal, handleOk, handleCancel] = modal(false);
+    const [open2, showModal2, handleOk2, handleCancel2] = modal(false);
+    const [open3, showModal3, handleOk3, handleCancel3] = modal(false);
 
-    const showModal = () => {
-        setOpen(true);
-    };
-
-    const handleOk = () => {
-        setLoading(true);
-        setTimeout(() => {
-        setLoading(false);
-        setOpen(false);
-        }, 3000);
-    };
-
-    const handleCancel = () => {
-        setOpen(false);
-    };
     
     const { me } = useSelector((state) => state.user);
 
@@ -36,20 +23,20 @@ const UserProfile = () => {
                 <Button>Edit Profile</Button>
             </Top>
             <Email>{me.email}</Email>
-            <Middle>
+            <Info>
                 <Sbutton onClick={showModal}><Count>{me.Followings.length}</Count> Posts</Sbutton>
                 <Modal open={open} title="Posts" onOk={handleOk} onCancel={handleCancel} footer={[]}>
                     <p>{me.Followings.map(a => a.nickname)}</p>
                 </Modal>
-                <Sbutton onClick={showModal}><Count>{me.Followings.length}</Count> Following</Sbutton>
-                <Modal open={open} title="Following" onOk={handleOk} onCancel={handleCancel} footer={[]}>
+                <Sbutton onClick={showModal2}><Count>{me.Followings.length}</Count> Following</Sbutton>
+                <Modal open={open2} title="Following" onOk={handleOk2} onCancel={handleCancel2} footer={[]}>
                     <p>{me.Followings.map(a => a.nickname)}</p>
                 </Modal>       
-                <Sbutton onClick={showModal}><Count>{me.Followers.length}</Count> Followers</Sbutton>
-                <Modal open={open} title="Followers" onOk={handleOk} onCancel={handleCancel} footer={[]}>
+                <Sbutton onClick={showModal3}><Count>{me.Followers.length}</Count> Followers</Sbutton>
+                <Modal open={open3} title="Followers" onOk={handleOk3} onCancel={handleCancel3} footer={[]}>
                     <p>{me.Followers.map(a => a.nickname)}</p>
                 </Modal>        
-            </Middle>      
+            </Info>      
         </Profile>
     );
 };
@@ -57,12 +44,12 @@ const UserProfile = () => {
 export default UserProfile;
 
 const Profile = styled.div`
-    margin-top:50px;
+    margin-top:30px;
     padding-top:50px;
     display:flex;
     justify-content:center;
     flex-wrap:wrap;
-    width:650px;
+    width:520px;
     height:350px;
     background-color:whitesmoke;
 `;
@@ -91,7 +78,7 @@ const Email =styled.div`
     justify-content:center;
     font-weight:bold;
 `;
-const Middle = styled.div`
+const Info = styled.div`
     margin-left:30px;
     display:flex;
     justify-content:center;

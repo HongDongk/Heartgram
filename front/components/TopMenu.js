@@ -1,9 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState ,useCallback } from 'react';
 import PropTypes from 'prop-types'
 import Link from 'next/link';
+import { useSelector, useDispatch } from 'react-redux';
 import styled, { createGlobalStyle }  from 'styled-components';
-import { Input } from 'antd';
+import { Input, Button } from 'antd';
 import { HomeFilled , UserOutlined, HeartOutlined, PlusSquareOutlined } from '@ant-design/icons';
+
+import { LOG_OUT_REQUEST } from '../reducers/user';
 
 
 const Global = createGlobalStyle`
@@ -16,6 +19,16 @@ const Global = createGlobalStyle`
 `;
 
 const TopMenu = () => {
+
+    const { me, logOutLoading } = useSelector((state) => state.user);
+    const dispatch = useDispatch();
+
+    const onLogout = useCallback(() => {
+        dispatch({
+            type: LOG_OUT_REQUEST,
+        });
+    }, []);
+
     
     return (
         <div>
@@ -30,7 +43,8 @@ const TopMenu = () => {
                   <TopItem><Heart /></TopItem>
                   <TopItem><Link href="/main"><a><PlusSquareOutlined /></a></Link></TopItem>
                   <TopItem><Link href="/profile"><a><UserOutlined /></a></Link></TopItem>      
-                </Util>               
+                </Util>  
+                {me ? <Button onClick={onLogout} loading={logOutLoading}>LogOut</Button> : <Link href="/"><a>LogIn</a></Link>}        
             </Top>
         </div>
     );
