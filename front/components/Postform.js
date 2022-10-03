@@ -38,8 +38,11 @@ const PostForm = () => {
         <SInput autoSize={{ minRows: 5 }} maxLength={500} placeholder="어떤 신기한 일이 있었나요?" value={text} onChange={onChangeText} />
         <div>
           <input type="file" multiple hidden ref={imageInput} />
-          <Button onClick={onClickImageUpload}>이미지 업로드</Button>
-          <Button type="primary" htmlType="submit" loading={addPostLoading}>짹짹</Button>
+          <ButtonBox>
+            <Button onClick={onClickImageUpload}>이미지 업로드</Button>
+            <Button type="primary" htmlType="submit" loading={addPostLoading}>올리기</Button>
+          </ButtonBox>
+         
         </div>
         <div>
           {imagePaths.map((v) => (
@@ -59,11 +62,20 @@ export default PostForm;
 
 const SForm =styled(Form)`
     margin-top:50px;
-    width:700px;
+    width:600px;
     height:200px;
+    border: 1px solid red;
 `;
 
 const SInput= styled(Input.TextArea)`
-    width:700px;
+    width:100%;
     border-radius:10px;
-`
+`;
+
+const ButtonBox = styled.div`
+    margin-top:10px;
+    width:100%;
+    display:flex;
+    justify-content:flex-end;
+`;
+

@@ -44,7 +44,7 @@ const TopMenu = () => {
                 <Util>
                   <TopItem><Link href="/main"><a><HomeFilled /></a></Link></TopItem>
                   <TopItem><Heart /></TopItem>
-                  <TopItem><Link href="/main"><a><PlusSquareOutlined /></a></Link></TopItem>
+                  <TopItem><Link href="/postupdate"><a><PlusSquareOutlined /></a></Link></TopItem>
                   <TopItem><Link href="/profile"><a><UserOutlined /></a></Link></TopItem>      
                 </Util>  
                 <LogIn>{me && <SButton onClick={onLogout}><Link href="/"><Sa>LogOut</Sa></Link></SButton>}</LogIn>     

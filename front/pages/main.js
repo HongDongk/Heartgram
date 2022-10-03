@@ -1,12 +1,37 @@
+import React, { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import styled from 'styled-components';
+import { useInView } from 'react-intersection-observer';
+
+import PostCard from '../components/PostCard';
 import TopMenu from "../components/TopMenu"
-import styled, { createGlobalStyle }  from 'styled-components';
-import PostForm from "../components/Postform";
+import { LOAD_POSTS_REQUEST } from '../reducers/post';
+
 
 const Main = () => {
+    const dispatch = useDispatch();
+    const { mainPosts, hasMorePost, loadPostsLoading } = useSelector((state) => state.post);
+    const [ref, inView] = useInView();
+
+    useEffect(
+        () => {
+        if (inView && hasMorePost && !loadPostsLoading) {
+            const lastId = mainPosts[mainPosts.length - 1]?.id;
+            dispatch({
+                type: LOAD_POSTS_REQUEST,
+                lastId,
+            });
+        }
+        },
+        [inView, hasMorePost, loadPostsLoading, mainPosts],
+    );
+
     return(
+        
         <Content>
              <TopMenu/>
-             <PostForm/>
+             {mainPosts.map((c) => (<PostCard key={c.id} post={c} />))}
+             <div ref={hasMorePost && !loadPostsLoading ? ref : undefined} style={{ height: 10 }} />
         </Content>
        
     )
