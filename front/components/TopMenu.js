@@ -23,7 +23,7 @@ const Global = createGlobalStyle`
 
 const TopMenu = () => {
 
-    const { me, logOutLoading } = useSelector((state) => state.user);
+    const { me } = useSelector((state) => state.user);
     const dispatch = useDispatch();
 
     const onLogout = useCallback(() => {
@@ -47,7 +47,7 @@ const TopMenu = () => {
                   <TopItem><Link href="/main"><a><PlusSquareOutlined /></a></Link></TopItem>
                   <TopItem><Link href="/profile"><a><UserOutlined /></a></Link></TopItem>      
                 </Util>  
-                <LogIn>{me ? <SButton onClick={onLogout}>LogOut</SButton> : <Link href="/"><Sa>LogIn</Sa></Link>}</LogIn>     
+                <LogIn>{me && <SButton onClick={onLogout}><Link href="/"><Sa>LogOut</Sa></Link></SButton>}</LogIn>     
             </Top>
         </div>
     );
@@ -88,10 +88,7 @@ const LogIn = styled.div`
     justify-content:flex-end;
 `;
 const SButton = styled.button`
-    font-size:20px;
-    color: #696969;
     border: none;
-    font-weight: bold;
     background-color:whitesmoke;
     &:hover{  
         cursor: pointer;

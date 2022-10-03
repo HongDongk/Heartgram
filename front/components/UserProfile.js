@@ -5,13 +5,12 @@ import styled from 'styled-components';
 import { PlusCircleOutlined } from '@ant-design/icons';
 
 import modal from '../hooks/modal';
-import { LOG_OUT_REQUEST } from '../reducers/user';
+
 
 const UserProfile = () => {
   
-    const [open, showModal, handleOk, handleCancel] = modal(false);
+    const [open1, showModal1, handleOk1, handleCancel1] = modal(false);
     const [open2, showModal2, handleOk2, handleCancel2] = modal(false);
-    const [open3, showModal3, handleOk3, handleCancel3] = modal(false);
 
     
     const { me } = useSelector((state) => state.user);
@@ -24,16 +23,13 @@ const UserProfile = () => {
             </Top>
             <Email>{me.email}</Email>
             <Info>
-                <Sbutton onClick={showModal}><Count>{me.Followings.length}</Count> Posts</Sbutton>
-                <Modal open={open} title="Posts" onOk={handleOk} onCancel={handleCancel} footer={[]}>
-                    <p>{me.Followings.map(a => a.nickname)}</p>
-                </Modal>
-                <Sbutton onClick={showModal2}><Count>{me.Followings.length}</Count> Following</Sbutton>
-                <Modal open={open2} title="Following" onOk={handleOk2} onCancel={handleCancel2} footer={[]}>
+                <Sbutton><Count>{me.Followings.length}</Count> Posts</Sbutton>
+                <Sbutton onClick={showModal1}><Count>{me.Followings.length}</Count> Following</Sbutton>
+                <Modal open={open1} title="Following" onOk={handleOk1} onCancel={handleCancel1} footer={[]}>
                     <p>{me.Followings.map(a => a.nickname)}</p>
                 </Modal>       
-                <Sbutton onClick={showModal3}><Count>{me.Followers.length}</Count> Followers</Sbutton>
-                <Modal open={open3} title="Followers" onOk={handleOk3} onCancel={handleCancel3} footer={[]}>
+                <Sbutton onClick={showModal2}><Count>{me.Followers.length}</Count> Followers</Sbutton>
+                <Modal open={open2} title="Followers" onOk={handleOk2} onCancel={handleCancel2} footer={[]}>
                     <p>{me.Followers.map(a => a.nickname)}</p>
                 </Modal>        
             </Info>      
