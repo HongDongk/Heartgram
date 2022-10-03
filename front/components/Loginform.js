@@ -31,28 +31,28 @@ const Loginform = () => {
         <Content>
             <Logo>HeartGram</Logo>
             <FormWrapper onFinish={onSubmitForm}  autoComplete="off">
-            <div>
-                <SInput 
-                    name="user-email" 
-                    placeholder="이메일" 
-                    type="email" 
-                    value={email} 
-                    onChange={onChangeEmail} 
-                    required 
-                />
-            </div>
-            <div>
-                <SInput 
-                    name="user-password" 
-                    placeholder="비밀번호" 
-                    type="password" 
-                    value={password} 
-                    onChange={onChangePassword} 
-                    required
-                />
-            </div>
-            <div><Submit type="primary" htmlType="submit" loading={logInLoading}>Login</Submit></div>       
-        </FormWrapper>
+                <div>
+                    <SInput 
+                        name="user-email" 
+                        placeholder="이메일" 
+                        type="email" 
+                        value={email} 
+                        onChange={onChangeEmail} 
+                        required 
+                    />
+                </div>
+                <div>
+                    <SInput 
+                        name="user-password" 
+                        placeholder="비밀번호" 
+                        type="password" 
+                        value={password} 
+                        onChange={onChangePassword} 
+                        required
+                    />
+                </div>
+                <div><Submit type="primary" htmlType="submit" loading={logInLoading}>Login</Submit></div>       
+            </FormWrapper>
         <Box><div>Don't have an account?&nbsp;&nbsp;&nbsp;&nbsp;</div><Link href="/signup"><a>Sign up</a></Link></Box>
     
         </Content>

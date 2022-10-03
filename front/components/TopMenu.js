@@ -1,9 +1,8 @@
-import React, { useState ,useCallback } from 'react';
-import PropTypes from 'prop-types'
+import React, { useCallback } from 'react';
 import Link from 'next/link';
 import { useSelector, useDispatch } from 'react-redux';
 import styled, { createGlobalStyle }  from 'styled-components';
-import { Input, Button } from 'antd';
+import { Input } from 'antd';
 import { HomeFilled , UserOutlined, HeartOutlined, PlusSquareOutlined } from '@ant-design/icons';
 
 import { LOG_OUT_REQUEST } from '../reducers/user';
@@ -16,6 +15,10 @@ const Global = createGlobalStyle`
         font-weight:bold;
         font-size:25px;
     }
+    a:hover{  
+        color: #696969;
+    }
+
 `;
 
 const TopMenu = () => {
@@ -44,7 +47,7 @@ const TopMenu = () => {
                   <TopItem><Link href="/main"><a><PlusSquareOutlined /></a></Link></TopItem>
                   <TopItem><Link href="/profile"><a><UserOutlined /></a></Link></TopItem>      
                 </Util>  
-                {me ? <Button onClick={onLogout} loading={logOutLoading}>LogOut</Button> : <Link href="/"><a>LogIn</a></Link>}        
+                <LogIn>{me ? <SButton onClick={onLogout}>LogOut</SButton> : <Link href="/"><Sa>LogIn</Sa></Link>}</LogIn>     
             </Top>
         </div>
     );
@@ -55,7 +58,7 @@ export default TopMenu;
 const Top = styled.div`
     width:100vw;
     height:70px;
-    padding: 0 20%;
+    padding: 0 15%;
     display:flex;
     justify-content:center;
     justify-content:space-between;
@@ -67,25 +70,37 @@ const Top = styled.div`
 const TopItem = styled.div`
 
 `;
-
 const SearchBox = styled(Input.Search)`
     width:300px;
     
 `;
-
 const Util = styled.div`
-    width:16%;
+    width:200px;
     min-width:150px;
     display:flex;
     justify-content:center;
     justify-content:space-between;
     align-items:center;
-
 `;
-
-
-
-
+const LogIn = styled.div`
+    width:100px;
+    display:flex;
+    justify-content:flex-end;
+`;
+const SButton = styled.button`
+    font-size:20px;
+    color: #696969;
+    border: none;
+    font-weight: bold;
+    background-color:whitesmoke;
+    &:hover{  
+        cursor: pointer;
+    }
+`;
+const Sa = styled.a`
+    font-size:20px;
+    color: #696969;
+`;
 const Logo = styled.div`
     font-size:30px;
     font-weight: bold;
@@ -94,7 +109,6 @@ const Logo = styled.div`
         cursor: pointer;
     }
 `;
-
 const Heart = styled(HeartOutlined)`
     margin-top:4px;
     font-size:25px;
@@ -102,5 +116,4 @@ const Heart = styled(HeartOutlined)`
     &:hover{  
         cursor: pointer;
     }
-
 `;
