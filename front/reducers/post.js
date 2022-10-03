@@ -100,7 +100,7 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
             draft.loadPostsLoading = false;
             draft.loadPostsDone = true;
             draft.mainPosts = action.data.concat(draft.mainPosts); //맨앞에 추가해서 새로운 배열 반환
-            draft.hasMorePosts = draft.mainPosts.length < 50;
+            draft.hasMorePosts = draft.mainPosts.length === 10;
             break;
         case LOAD_POSTS_FAILURE:
             draft.loadPostsLoading = false;

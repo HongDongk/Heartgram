@@ -10,12 +10,12 @@ import { LOAD_POSTS_REQUEST } from '../reducers/post';
 
 const Main = () => {
     const dispatch = useDispatch();
-    const { mainPosts, hasMorePost, loadPostsLoading } = useSelector((state) => state.post);
+    const { mainPosts, hasMorePosts, loadPostsLoading } = useSelector((state) => state.post);
     const [ref, inView] = useInView();
 
     useEffect(
         () => {
-        if (inView && hasMorePost && !loadPostsLoading) {
+        if (inView && hasMorePosts && !loadPostsLoading) {
             const lastId = mainPosts[mainPosts.length - 1]?.id;
             dispatch({
                 type: LOAD_POSTS_REQUEST,
@@ -23,7 +23,7 @@ const Main = () => {
             });
         }
         },
-        [inView, hasMorePost, loadPostsLoading, mainPosts],
+        [inView, hasMorePosts, loadPostsLoading, mainPosts],
     );
 
     return(
@@ -31,7 +31,7 @@ const Main = () => {
         <Content>
              <TopMenu/>
              {mainPosts.map((c) => (<PostCard key={c.id} post={c} />))}
-             <div ref={hasMorePost && !loadPostsLoading ? ref : undefined} style={{ height: 10 }} />
+             <div ref={hasMorePosts && !loadPostsLoading ? ref : undefined} style={{ height: 10 }} />
         </Content>
        
     )
