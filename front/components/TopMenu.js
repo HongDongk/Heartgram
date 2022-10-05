@@ -1,9 +1,9 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useState} from 'react';
 import Link from 'next/link';
 import { useSelector, useDispatch } from 'react-redux';
 import styled, { createGlobalStyle }  from 'styled-components';
 import { Input } from 'antd';
-import { HomeFilled , UserOutlined, HeartOutlined, PlusSquareOutlined } from '@ant-design/icons';
+import { HomeFilled , UserOutlined, HeartOutlined, HeartTwoTone, PlusSquareOutlined } from '@ant-design/icons';
 
 import { LOG_OUT_REQUEST } from '../reducers/user';
 
@@ -25,12 +25,17 @@ const TopMenu = () => {
 
     const { me } = useSelector((state) => state.user);
     const dispatch = useDispatch();
+    const [liked, setLiked] = useState(false);
 
     const onLogout = useCallback(() => {
         dispatch({
             type: LOG_OUT_REQUEST,
         });
     }, []);
+
+    const HeartClick = useCallback(() => {
+        setLiked((prev) => !prev);
+      }, [liked]);
 
     
     return (
@@ -43,7 +48,7 @@ const TopMenu = () => {
                 </TopItem>
                 <Util>
                   <TopItem><Link href="/main"><a><HomeFilled /></a></Link></TopItem>
-                  <TopItem><Heart /></TopItem>
+                  <TopItem>{liked ? <Heart twoToneColor="red" onClick={HeartClick} /> : <HeartEmpty onClick={HeartClick}/>}</TopItem>
                   <TopItem><Link href="/postupdate"><a><PlusSquareOutlined /></a></Link></TopItem>
                   <TopItem><Link href="/profile"><a><UserOutlined /></a></Link></TopItem>      
                 </Util>  
@@ -106,11 +111,14 @@ const Logo = styled.div`
         cursor: pointer;
     }
 `;
-const Heart = styled(HeartOutlined)`
+const Heart = styled(HeartTwoTone)`
     margin-top:4px;
     font-size:25px;
-    color:#696969;
-    &:hover{  
-        cursor: pointer;
-    }
 `;
+
+const HeartEmpty = styled(HeartOutlined)`
+    margin-top:4px;
+    font-size:25px;
+    color: #696969;
+`;
+

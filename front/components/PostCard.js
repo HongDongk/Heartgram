@@ -13,10 +13,11 @@ const CardWrapper = styled.div`
   margin-bottom: 20px;
 `;
 
-const PostCard = () => {
-    
+const PostCard = ({ post }) => {
+    const dispatch = useDispatch();
+  
     return (
-        <>Fuckyou</>
+       <></>
     );
 };
 
