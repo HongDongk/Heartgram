@@ -10,16 +10,27 @@ import Link from 'next/link';
 import { REMOVE_POST_REQUEST } from '../reducers/post';
 
 const CardWrapper = styled.div`
-  margin-bottom: 20px;
+  width:60%;
 `;
 
 const PostCard = ({ post }) => {
-    const dispatch = useDispatch();
+    
   
     return (
-       <></>
+        <CardWrapper>
+          <SCard 
+            cover={ <img src ={post.Images[0].src} />  }>
+          </SCard>
+        </CardWrapper>
+
     );
 };
-
+ 
 
 export default PostCard;
+
+const SCard = styled(Card)`
+  width:500;
+  border: 1px solid red;
+
+`;

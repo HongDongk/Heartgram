@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import styled from 'styled-components';
+import styled  from 'styled-components';
 import { useInView } from 'react-intersection-observer';
 
 import PostCard from '../components/PostCard';
@@ -27,16 +27,13 @@ const Main = () => {
     );
 
     return(
-        
-        <Content>
-             <TopMenu/>
-             {mainPosts.map((c) => (<PostCard key={c.id} post={c} />))}
-             <div ref={hasMorePosts && !loadPostsLoading ? ref : undefined} style={{ height: 10 }} />
-        </Content>
-       
-    )
-
-}
+            <Content>
+                <TopMenu/>
+                {mainPosts.map((c) => (<PostCard key={c.id} post={c} />))}
+                <div ref={hasMorePosts && !loadPostsLoading ? ref : undefined} style={{ height: 10 }} />
+            </Content>   
+    );
+};
 
 export default Main;
 

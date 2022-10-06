@@ -31,7 +31,7 @@ const TopMenu = () => {
         dispatch({
             type: LOG_OUT_REQUEST,
         });
-    }, []);
+    }, [dispatch]);
 
     const HeartClick = useCallback(() => {
         setLiked((prev) => !prev);

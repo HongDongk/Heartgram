@@ -9,6 +9,7 @@ const Global = createGlobalStyle`
         text-decoration: none;
         font-weight:bold;
     }
+    
 `;
 
 

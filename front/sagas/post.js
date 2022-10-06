@@ -31,7 +31,7 @@ function* loadPosts(action) {
       yield delay(1000);
       yield put({
         type: LOAD_POSTS_SUCCESS,
-        data: generateDummyPost(10),
+        data: generateDummyPost(15),
       });
     } catch (err) {
       console.error(err);

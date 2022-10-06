@@ -1,5 +1,5 @@
 import shortId from 'shortid';
-import faker from '@faker-js/faker';
+import { faker } from '@faker-js/faker';
 
 import produce from '../util/produce';
 
@@ -25,7 +25,7 @@ export const generateDummyPost = (number) => Array(number).fill().map(() => ({
     id: shortId.generate(),
     User: {
       id: shortId.generate(),
-      nickname: faker.name.findName(),
+      nickname: faker.name.fullName(),
     },
     content: faker.lorem.paragraph(),
     Images: [{
@@ -34,7 +34,7 @@ export const generateDummyPost = (number) => Array(number).fill().map(() => ({
     Comments: [{
       User: {
         id: shortId.generate(),
-        nickname: faker.name.findName(),
+        nickname: faker.name.fullName(),
       },
       content: faker.lorem.sentence(),
     }],
