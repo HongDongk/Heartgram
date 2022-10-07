@@ -30,7 +30,8 @@ export const generateDummyPost = (number) => Array(number).fill().map(() => ({
     content: faker.lorem.paragraph(),
     Images: [{
       src: faker.image.image(),
-    }],
+    }, { src: faker.image.image(),}, { src: faker.image.image(),}
+    ],
     Comments: [{
       User: {
         id: shortId.generate(),

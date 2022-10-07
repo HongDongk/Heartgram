@@ -6,11 +6,14 @@ import { useSelector, useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import Link from 'next/link';
 
+import PostImages from './PostImages';
+
 
 import { REMOVE_POST_REQUEST } from '../reducers/post';
 
 const CardWrapper = styled.div`
-  width:60%;
+    margin-bottom:25px;
+    border: 1px solid red;
 `;
 
 const PostCard = ({ post }) => {
@@ -19,18 +22,28 @@ const PostCard = ({ post }) => {
     return (
         <CardWrapper>
           <SCard 
-            cover={ <img src ={post.Images[0].src} />  }>
+            cover={ <PostImages images={post.Images} /> }>
           </SCard>
         </CardWrapper>
 
     );
 };
- 
+
+
+PostCard.propTypes = {
+  post: PropTypes.shape({
+    id: PropTypes.number,
+    User: PropTypes.object,
+    UserId: PropTypes.number,
+    content: PropTypes.string,
+    createdAt: PropTypes.object,
+    Comments: PropTypes.arrayOf(PropTypes.any),
+    Images: PropTypes.arrayOf(PropTypes.any),
+  }).isRequired,
+};
 
 export default PostCard;
 
 const SCard = styled(Card)`
-  width:500;
-  border: 1px solid red;
 
 `;
