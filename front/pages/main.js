@@ -49,11 +49,8 @@ const Content = styled.div`
 `;
 
 const MainContent = styled.div`
-    width:100%;
-    padding: 70px 200px;
-    display:flex;
-    justify-content:center;
-    flex-wrap: wrap;
+    width:60%;
+    padding: 50px 200px;
 `;
 
 
