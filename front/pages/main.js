@@ -49,7 +49,7 @@ const Content = styled.div`
 `;
 
 const MainContent = styled.div`
-    width:60%;
+    width:55%;
     padding: 50px 200px;
 `;
 

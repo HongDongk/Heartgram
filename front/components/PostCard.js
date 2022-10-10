@@ -67,7 +67,6 @@ const User = styled.div`
 
 const SCard = styled(Card)`
     display:block;
-    width:100%;
     border:none;
 `;
 
