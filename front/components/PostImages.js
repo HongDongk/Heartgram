@@ -4,15 +4,6 @@ import styled from 'styled-components';
 import Slick from 'react-slick';
 
 
-const isImageValid = (src) => {
-    return new Promise((resolve) => {
-        const img = document.createElement('img');
-        img.onerror = () => resolve(false);
-        img.onload = () => resolve(true);
-        img.src = src;
-    });
-}
-
 const PostImages = ({ images }) => {
     
     const settings = {
@@ -25,14 +16,6 @@ const PostImages = ({ images }) => {
     };
     
     const imgEl = useRef();
-
-    useEffect(() => {
-        isImageValid(images[0].src).then((isValid) => {
-            if (!isValid) {
-                imgEl.current.remove();
-            }
-        });
-    }, [images[0].src]);
 
 
     return (
@@ -55,7 +38,7 @@ export default PostImages;
 
 const Pictures = styled.div`
     text-align:center;
-    margin-bottom:15px;
+    margin-bottom:10px;
     &:hover{  
         cursor: pointer;
     }

@@ -62,7 +62,8 @@ export default PostForm;
 
 const SForm =styled(Form)`
     margin-top:50px;
-    width:600px;
+    width:100%;
+    padding: 0 32%;
     height:200px;
     border: 1px solid red;
 `;
@@ -73,7 +74,7 @@ const SInput= styled(Input.TextArea)`
 `;
 
 const ButtonBox = styled.div`
-    margin-top:10px;
+    margin-top:20px;
     width:100%;
     display:flex;
     justify-content:flex-end;
