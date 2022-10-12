@@ -31,6 +31,10 @@ const Postupdate = () => {
         <Content>
              <TopMenu/>
              <PostForm/>
+             <MainContent>
+                    {mainPosts.map((c) => (<PostCard key={c.id} post={c} />))}
+                    <div ref={hasMorePosts && !loadPostsLoading ? ref : undefined} style={{ height: 10 }} />
+            </MainContent>
         </Content>       
     )
 
@@ -39,5 +43,14 @@ const Postupdate = () => {
 export default Postupdate;
 
 const Content = styled.div`
+    display:flex;
+    justify-content:center;
+    flex-wrap: wrap;
     background-color: #E6E6FA;
+    overflow-x: hidden;
+`;
+
+const MainContent = styled.div`
+    width:65%;
+    padding: 50px 200px;
 `;

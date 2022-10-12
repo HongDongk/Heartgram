@@ -11,6 +11,8 @@ import UserEditForm from './UserEditForm';
 const UserProfile = () => {
     
     const [open, showModal, handleOk, handleCancel] = modal(false);
+    const [open2, showModal2, handleOk2, handleCancel2] = modal(false);
+    const [open3, showModal3, handleOk3, handleCancel3] = modal(false);
     
     const { me } = useSelector((state) => state.user);
 
@@ -32,25 +34,15 @@ const UserProfile = () => {
             </Top>
             
             <Info>
-                <Sbutton><Count>{me.Followings.length} 게시글</Count> </Sbutton>
-                <Popover
-                    title="팔로잉"
-                    trigger="click"
-                    content={(
-                        <div>{me.Followings.map((a) => (<p>{a.nickname}</p>))}</div>
-                    )}
-                    >
-                    <Count>{me.Followings.length} 팔로잉</Count>
-                </Popover>
-                <Popover
-                    title="팔로워"
-                    trigger="click"
-                    content={(
-                        <div>{me.Followers.map((a) => (<p>{a.nickname}</p>))}</div>
-                    )}
-                    >
-                    <Count>{me.Followers.length} 팔로워</Count>
-                </Popover>
+                <Sbutton><Count>{me.Followings.length}</Count> 게시글</Sbutton>
+                <Sbutton onClick={showModal2}><Count>{me.Followers.length}</Count> 팔로워</Sbutton>
+                <Modal open={open2} title="팔로워" onOk={handleOk2} onCancel={handleCancel2} footer={[]}>
+                    <div>{me.Followers.map((a) => (<p>{a.id}</p>))}</div>
+                </Modal> 
+                <Sbutton onClick={showModal3}><Count>{me.Followings.length}</Count> 팔로잉</Sbutton>
+                <Modal open={open3} title="팔로잉" onOk={handleOk3} onCancel={handleCancel3} footer={[]}>
+                    <div>{me.Followings.map((a) => (<p>{a.id}</p>))}</div>
+                </Modal>            
             </Info>      
         </Profile>
     );
@@ -117,6 +109,7 @@ const Count = styled.span`
 const SModal = styled(Modal)`
     display:flex;
     justify-content:center;
+
 `;
 
 

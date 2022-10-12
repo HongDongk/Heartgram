@@ -57,8 +57,8 @@ const dummyUser = (data) => ({
     nickname: '동근이',
     id: 1,
     Posts: [{ id: 1 }],
-    Followings: [{ nickname: '부기초' }, { nickname: 'Chanho Lee' }, { nickname: 'neue zeal' }],
-    Followers: [{ nickname: '부기초' }, { nickname: 'Chanho Lee' }, { nickname: 'Hi' }],
+    Followings: [{ id: '부기초' }, { id: 'Chanho Lee' }, { id: 'neue zeal' }],
+    Followers: [{ id: '부기초' }, { id: 'Chanho Lee' }, { id: 'Hi' }],
 });
 
 const reducer = (state = initialState, action) => produce(state, (draft) => {

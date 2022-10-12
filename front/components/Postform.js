@@ -64,8 +64,9 @@ const SForm =styled(Form)`
     margin-top:50px;
     width:100%;
     padding: 0 32%;
+    padding-top:1%;
     height:200px;
-    border: 1px solid red;
+    background-color:		whitesmoke;
 `;
 
 const SInput= styled(Input.TextArea)`

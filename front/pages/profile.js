@@ -1,7 +1,6 @@
 import UserProfile from "../components/UserProfile";
 import TopMenu from "../components/TopMenu"
 import styled, { createGlobalStyle }  from 'styled-components';
-import BestUser from "../components/BestUsers";
 
 
 const Profile = () => {
@@ -10,7 +9,6 @@ const Profile = () => {
             <TopMenu/>
             <UserProfile/>
             <Border/>
-            <BestUser/>
         </Content>
     )
 

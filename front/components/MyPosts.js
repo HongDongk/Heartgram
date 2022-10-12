@@ -9,13 +9,12 @@ import Link from 'next/link';
 import PostImages from './PostImages';
 import PostCardContent from './PostCardContent';
 import CommentForm from './CommentForm';
-import FollowButton from './FollowButton';
 
 
 import { REMOVE_POST_REQUEST } from '../reducers/post';
 
 
-const PostCard = ({ post }) => {
+const MyPosts = () => {
     
     const dispatch = useDispatch();
     const { removePostLoading } = useSelector((state) => state.post);
@@ -41,7 +40,7 @@ const PostCard = ({ post }) => {
 
     return (
         <CardWrapper>
-          <User><a><Avatar>{post.User.nickname[0]}</Avatar>&nbsp;&nbsp;&nbsp;{post.User.nickname}</a>{id && <FollowButton post={post} />}</User>
+          <User><a><Avatar>{post.User.nickname[0]}</Avatar></a>&nbsp;&nbsp;&nbsp;{post.User.nickname}</User>
           <SCard 
             cover={ <PostImages images={post.Images} /> }
             actions={[
@@ -67,8 +66,7 @@ const PostCard = ({ post }) => {
                 >
                   <EllipsisOutlined />
                 </Popover>,
-            ]}
-            >
+            ]}>
             <Card.Meta
               description={<PostCardContent postData={post.content} />}
             />
@@ -101,20 +99,7 @@ const PostCard = ({ post }) => {
     );
 };
 
-
-PostCard.propTypes = {
-  post: PropTypes.shape({
-      id: PropTypes.string,
-      User: PropTypes.object,
-      UserId: PropTypes.number,
-      content: PropTypes.string,
-      createdAt: PropTypes.object,
-      Comments: PropTypes.arrayOf(PropTypes.any),
-      Images: PropTypes.arrayOf(PropTypes.any),
-  }).isRequired,
-};
-
-export default PostCard;
+export default MyPosts;
 
 const CardWrapper = styled.div`
     margin-bottom:25px;
@@ -124,16 +109,11 @@ const CardWrapper = styled.div`
 `;
 
 const User = styled.div`
-    display:flex;
-    justify-content:space-between;
     font-weight:bold;
     height:50px;
     padding-top: 12px;
-    margin-bottom: 10px;
+    margin-bottom: 15px;
     padding-left: 8px;
-    & > a{
-      font-size:13px;
-    }
 `;
 
 const SCard = styled(Card)`
