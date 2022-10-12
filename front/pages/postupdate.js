@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import styled, { createGlobalStyle }  from 'styled-components';
 import { useSelector, useDispatch } from 'react-redux';
+import { useInView } from 'react-intersection-observer';
 
 import TopMenu from "../components/TopMenu"
 import PostForm from "../components/Postform";
@@ -12,10 +13,11 @@ const Postupdate = () => {
 
     const dispatch = useDispatch();
     const { mainPosts, hasMorePosts, loadPostsLoading } = useSelector((state) => state.post);
+    const [ref, inView] = useInView();
 
     useEffect(
         () => {
-        if (hasMorePosts && !loadPostsLoading) {
+        if (inView && hasMorePosts && !loadPostsLoading) {
             const lastId = mainPosts[mainPosts.length - 1]?.id;
             dispatch({
                 type: LOAD_POSTS_REQUEST,
