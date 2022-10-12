@@ -1,37 +1,56 @@
 import React, { useCallback , useState } from 'react';
-import { Button, Modal } from 'antd';
+import { Button, Modal, Popover, EllipsisOutlined } from 'antd';
 import { useSelector, useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import { PlusCircleOutlined } from '@ant-design/icons';
 
 import modal from '../hooks/modal';
+import UserEditForm from './UserEditForm';
 
 
 const UserProfile = () => {
-  
-    const [open1, showModal1, handleOk1, handleCancel1] = modal(false);
-    const [open2, showModal2, handleOk2, handleCancel2] = modal(false);
-
+    
+    const [open, showModal, handleOk, handleCancel] = modal(false);
     
     const { me } = useSelector((state) => state.user);
 
     return (
         <Profile>
             <Avatar>{me.nickname[0]}{me.nickname[1]}</Avatar>
-            <Top>
-                <Button>Edit Profile</Button>
-            </Top>
             <Email>{me.email}</Email>
+            <Top>
+                <Button onClick={showModal}>Edit Profile</Button>
+                <SModal 
+                    open={open} 
+                    title="프로필 수정하기" 
+                    onOk={handleOk} 
+                    onCancel={handleCancel}
+                    footer={[]}
+                >
+                    <UserEditForm/>
+                </SModal>        
+            </Top>
+            
             <Info>
-                <Sbutton><Count>{me.Followings.length}</Count> Posts</Sbutton>
-                <Sbutton onClick={showModal1}><Count>{me.Followings.length}</Count> Following</Sbutton>
-                <Modal open={open1} title="Following" onOk={handleOk1} onCancel={handleCancel1} footer={[]}>
-                    <p>{me.Followings.map(a => a.nickname)}</p>
-                </Modal>       
-                <Sbutton onClick={showModal2}><Count>{me.Followers.length}</Count> Followers</Sbutton>
-                <Modal open={open2} title="Followers" onOk={handleOk2} onCancel={handleCancel2} footer={[]}>
-                    <p>{me.Followers.map(a => a.nickname)}</p>
-                </Modal>        
+                <Sbutton><Count>{me.Followings.length} 게시글</Count> </Sbutton>
+                <Popover
+                    title="팔로잉"
+                    trigger="click"
+                    content={(
+                        <div>{me.Followings.map((a) => (<p>{a.nickname}</p>))}</div>
+                    )}
+                    >
+                    <Count>{me.Followings.length} 팔로잉</Count>
+                </Popover>
+                <Popover
+                    title="팔로워"
+                    trigger="click"
+                    content={(
+                        <div>{me.Followers.map((a) => (<p>{a.nickname}</p>))}</div>
+                    )}
+                    >
+                    <Count>{me.Followers.length} 팔로워</Count>
+                </Popover>
             </Info>      
         </Profile>
     );
@@ -75,7 +94,6 @@ const Email =styled.div`
     font-weight:bold;
 `;
 const Info = styled.div`
-    margin-left:30px;
     display:flex;
     justify-content:center;
     align-items:center;
@@ -91,13 +109,14 @@ const Sbutton = styled.div`
 `
 const Count = styled.span`
     font-weight:bold;
+    &:hover{  
+        cursor: pointer;
+    }
 `;
 
-const Bottom = styled.div`
+const SModal = styled(Modal)`
     display:flex;
     justify-content:center;
-    width:700px;
-    background-color:white;
 `;
 
 
