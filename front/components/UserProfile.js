@@ -6,6 +6,8 @@ import { PlusCircleOutlined } from '@ant-design/icons';
 
 import modal from '../hooks/modal';
 import UserEditForm from './UserEditForm';
+import { UNFOLLOW_REQUEST } from '../reducers/user';
+import UnFollow from './UnFollow';
 
 
 const UserProfile = () => {
@@ -13,8 +15,10 @@ const UserProfile = () => {
     const [open, showModal, handleOk, handleCancel] = modal(false);
     const [open2, showModal2, handleOk2, handleCancel2] = modal(false);
     const [open3, showModal3, handleOk3, handleCancel3] = modal(false);
-    
+
+    const dispatch = useDispatch();
     const { me } = useSelector((state) => state.user);
+
 
     return (
         <Profile>
@@ -36,12 +40,12 @@ const UserProfile = () => {
             <Info>
                 <Sbutton><Count>{me.Followings.length}</Count> 게시글</Sbutton>
                 <Sbutton onClick={showModal2}><Count>{me.Followers.length}</Count> 팔로워</Sbutton>
-                <Modal open={open2} title="팔로워" onOk={handleOk2} onCancel={handleCancel2} footer={[]}>
-                    <div>{me.Followers.map((a) => (<p>{a.id}</p>))}</div>
+                <Modal open={open2} width={330} title="팔로워" onOk={handleOk2} onCancel={handleCancel2} footer={[]}>
+                    <div>{me.Followers.map((a) => (<Items key={a.id}>{a.id} <UnFollow header="팔로워" unfollow={a}/></Items>))}</div>
                 </Modal> 
                 <Sbutton onClick={showModal3}><Count>{me.Followings.length}</Count> 팔로잉</Sbutton>
-                <Modal open={open3} title="팔로잉" onOk={handleOk3} onCancel={handleCancel3} footer={[]}>
-                    <div>{me.Followings.map((a) => (<p>{a.id}</p>))}</div>
+                <Modal open={open3} width={330} title="팔로잉" onOk={handleOk3} onCancel={handleCancel3} footer={[]}>
+                    <div>{me.Followings.map((a) => (<Items key={a.id}>{a.id} <UnFollow header="팔로잉" unfollow={a}/></Items>))}</div>
                 </Modal>            
             </Info>      
         </Profile>
@@ -109,7 +113,13 @@ const Count = styled.span`
 const SModal = styled(Modal)`
     display:flex;
     justify-content:center;
+`;
 
+const Items = styled.div`
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:10px;
 `;
 
 

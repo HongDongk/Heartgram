@@ -20,6 +20,9 @@ export const initialState = {
     unfollowLoading: false, // 언팔로우 시도중
     unfollowDone: false,
     unfollowError: null,
+    unfollowLoading: false, // 언팔로잉 시도중
+    unfollowDone: false,
+    unfollowError: null,
     me: null,
     signUpData: {},
     loginData: {},
@@ -48,6 +51,10 @@ export const FOLLOW_FAILURE = 'FOLLOW_FAILURE';
 export const UNFOLLOW_REQUEST = 'UNFOLLOW_REQUEST';
 export const UNFOLLOW_SUCCESS = 'UNFOLLOW_SUCCESS';
 export const UNFOLLOW_FAILURE = 'UNFOLLOW_FAILURE';
+
+export const UNFOLLOWING_REQUEST = 'UNFOLLOWING_REQUEST';
+export const UNFOLLOWING_SUCCESS = 'UNFOLLOWING_SUCCESS';
+export const UNFOLLOWING_FAILURE = 'UNFOLLOWING_FAILURE';
 
 export const ADD_POST_TO_ME = 'ADD_POST_TO_ME';
 export const REMOVE_POST_OF_ME = 'REMOVE_POST_OF_ME';
@@ -151,9 +158,25 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
             draft.unfollowLoading = false;
             draft.unfollowError = action.error;
             break;
+        // 언팔로잉
+        case UNFOLLOWING_REQUEST:
+            draft.unfollowingLoading = true;
+            draft.unfollowingError = null;
+            draft.unfollowingDone = false;
+            break;
+        case UNFOLLOWING_SUCCESS:
+            draft.unfollowingLoading = false;
+            draft.me.Followers = draft.me.Followers.filter((v) => v.id !== action.data);
+            draft.unfollowingDone = true;
+            break;
+        case UNFOLLOWING_FAILURE:
+            draft.unfollowingLoading = false;
+            draft.unfollowingError = action.error;
+            break;
+        
         case ADD_POST_TO_ME:
             draft.me.Posts.unshift({id:action.data});
-            break;
+        break;
         case REMOVE_POST_OF_ME:
             draft.me.Posts = draft.me.Posts.filter((v) => v.id !== action.data);
             break;

@@ -35,7 +35,7 @@ const PostForm = () => {
 
     return (
       <SForm encType="multipart/form-data" onFinish={onSubmit}>
-        <SInput autoSize={{ minRows: 5 }} maxLength={500} placeholder="어떤 신기한 일이 있었나요?" value={text} onChange={onChangeText} />
+        <SInput autoSize={{ minRows: 6 }} maxLength={850} placeholder="어떤 신기한 일이 있었나요?" value={text} onChange={onChangeText} />
         <div>
           <input type="file" multiple hidden ref={imageInput} />
           <ButtonBox>
@@ -61,12 +61,11 @@ const PostForm = () => {
 export default PostForm;
 
 const SForm =styled(Form)`
-    margin-top:50px;
     width:100%;
     padding: 0 32%;
-    padding-top:1%;
-    height:200px;
-    background-color:		whitesmoke;
+    padding-top:50px;
+    padding-bottom:20px;
+    background-color:		#F8F8FF;
 `;
 
 const SInput= styled(Input.TextArea)`
@@ -75,7 +74,7 @@ const SInput= styled(Input.TextArea)`
 `;
 
 const ButtonBox = styled.div`
-    margin-top:20px;
+    margin-top:30px;
     width:100%;
     display:flex;
     justify-content:flex-end;

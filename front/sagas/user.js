@@ -20,6 +20,9 @@ import {
   UNFOLLOW_FAILURE,
   UNFOLLOW_REQUEST,
   UNFOLLOW_SUCCESS,
+  UNFOLLOWING_FAILURE,
+  UNFOLLOWING_REQUEST,
+  UNFOLLOWING_SUCCESS,
 } from '../reducers/user';
 
 // 로그인
@@ -148,6 +151,28 @@ function* unfollow(action) {
     }
 }
 
+// 언팔로잉
+function unfollowingAPI() {
+  return axios.post('/api/unfollowing');
+}
+
+function* unfollowing(action) {
+  try {
+    // const result = yield call(unfollowingAPI);
+    yield delay(1000);
+    yield put({
+      type: UNFOLLOWING_SUCCESS,
+      data: action.data,
+    });
+  } catch (err) {
+    console.error(err);
+    yield put({
+      type: UNFOLLOWING_FAILURE,
+      error: err.response.data,
+    });
+  }
+}
+
 
 function* watchLogIn() {
     yield takeLatest(LOG_IN_REQUEST, logIn);
@@ -173,6 +198,11 @@ function* watchUnfollow() {
     yield takeLatest(UNFOLLOW_REQUEST, unfollow);
 }
 
+function* watchUnfollowing() {
+  yield takeLatest(UNFOLLOWING_REQUEST, unfollowing);
+}
+
+
 export default function* userSaga() {
     yield all([
       fork(watchLogIn),
@@ -181,5 +211,6 @@ export default function* userSaga() {
       fork(watchChangeNickname),
       fork(watchFollow),
       fork(watchUnfollow),
+      fork(watchUnfollowing),
     ]);
 }

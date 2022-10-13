@@ -19,16 +19,16 @@ const UserEditForm = () => {
 
     return (
         <FormWrapper onFinish={onSubmitForm} layout="vertical"  autoComplete="off">
-                <Form.Item label="이메일바꾸기" name="changeemail">
+                <Form.Item label="이메일 수정" name="changeemail">
                     <SInput 
                         name="user-email" 
-                        placeholder={me.email} 
+                        placeholder= {me.email} 
                         type="email" 
                         value={email} 
                         onChange={onChangeEmail} 
                     />
                 </Form.Item>
-                <Form.Item label="비밀번호바꾸기" name="changepassword">
+                <Form.Item label="비밀번호 수정" name="changepassword">
                     <SInput 
                         name="user-password" 
                         placeholder={me.password} 
@@ -37,7 +37,7 @@ const UserEditForm = () => {
                         onChange={onChangePassword} 
                     />
                 </Form.Item>
-                <Form.Item label="닉네임바꾸기" name="changenickname">
+                <Form.Item label="닉네임 수정" name="changenickname">
                     <SInput 
                         name="user-nickname" 
                         placeholder={me.nickname} 
@@ -54,16 +54,16 @@ const UserEditForm = () => {
 export default UserEditForm;
 
 const SInput=styled(Input)`
-    width:300px;
+    width:350px;
     border-radius:6px;  
 `;
 
 const Submit=styled(Button)`
-    width:300px;
+    width:350px;
     border-radius:6px;
     font-weight:500;
 `;
 
 const FormWrapper=styled(Form)`
-    width:300px;
+    width:350px;
 `;
