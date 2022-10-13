@@ -121,7 +121,3 @@ const Items = styled.div`
     align-items:center;
     margin-bottom:10px;
 `;
-
-
-
-

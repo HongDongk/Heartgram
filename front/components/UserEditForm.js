@@ -1,24 +1,37 @@
 import { Form, Input, Button} from 'antd';
-import React, {useCallback} from 'react';
+import React, {useCallback, useEffect,} from 'react';
 import styled from 'styled-components';
 import { useSelector, useDispatch } from 'react-redux';
 
 import useInput from '../hooks/useInput';
+import { CHANGE_NICKNAME_REQUEST } from '../reducers/user';
 
 const UserEditForm = () => {
 
+    const dispatch = useDispatch();
     const [email, onChangeEmail] = useInput('');
     const [password, onChangePassword] = useInput('');
     const [nickname, onChangeNickname] = useInput('');
     const { me } = useSelector((state) => state.user);
 
-    const onSubmitForm = useCallback(() => {
-       
-    }, [email, password]);
+    const { changeNicknameLoading, changeNicknameDone } = useSelector((state) => state.user);
+
+    const onSubmit = useCallback(() => {
+        dispatch({
+            type: CHANGE_NICKNAME_REQUEST,
+            data: nickname,
+        });
+    }, [nickname]);
+    
+    useEffect(() => {
+        if (changeNicknameDone) {
+          setText('');
+        }
+    }, [changeNicknameDone]);
 
 
     return (
-        <FormWrapper onFinish={onSubmitForm} layout="vertical"  autoComplete="off">
+        <FormWrapper onFinish={onSubmit} layout="vertical" autoComplete="off">
                 <Form.Item label="이메일 수정" name="changeemail">
                     <SInput 
                         name="user-email" 
@@ -46,7 +59,7 @@ const UserEditForm = () => {
                         onChange={onChangeNickname} 
                     />
                 </Form.Item>
-                <Submit type="primary" htmlType="submit">수정하기</Submit>      
+                <Submit type="primary" loading={changeNicknameLoading} htmlType="submit">수정하기</Submit>      
         </FormWrapper>
     );
 };
@@ -67,3 +80,4 @@ const Submit=styled(Button)`
 const FormWrapper=styled(Form)`
     width:350px;
 `;
+
