@@ -68,6 +68,10 @@ const dummyUser = (data) => ({
     Followers: [{ id: '부기초' }, { id: 'Chanho Lee' }, { id: 'Hi' }],
 });
 
+export const logoutRequestAction = () => ({
+    type: LOG_OUT_REQUEST,
+});
+
 const reducer = (state = initialState, action) => produce(state, (draft) => {
     switch (action.type) {
         // 로그인
@@ -78,7 +82,7 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
             break;
         case LOG_IN_SUCCESS:
             draft.logInLoading = false;
-            draft.me = dummyUser(action.data);
+            draft.me = action.data;
             draft.logInDone = true;
             break;
         case LOG_IN_FAILURE:

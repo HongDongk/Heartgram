@@ -6,6 +6,7 @@ import { useInView } from 'react-intersection-observer';
 import PostCard from '../components/PostCard';
 import TopMenu from "../components/TopMenu"
 import { LOAD_POSTS_REQUEST } from '../reducers/post';
+import { LOAD_MY_INFO_REQUEST } from '../reducers/user';
 
 
 const Main = () => {

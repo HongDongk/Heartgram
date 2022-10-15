@@ -5,7 +5,7 @@ import styled, { createGlobalStyle }  from 'styled-components';
 import { Input } from 'antd';
 import { HomeFilled , UserOutlined, HeartOutlined, HeartTwoTone, PlusSquareOutlined } from '@ant-design/icons';
 
-import { LOG_OUT_REQUEST } from '../reducers/user';
+import { logoutRequestAction } from '../reducers/user';
 
 
 const Global = createGlobalStyle`
@@ -28,10 +28,8 @@ const TopMenu = () => {
     const [liked, setLiked] = useState(false);
 
     const onLogout = useCallback(() => {
-        dispatch({
-            type: LOG_OUT_REQUEST,
-        });
-    }, [dispatch]);
+        dispatch(logoutRequestAction());
+    }, []);
 
     const HeartClick = useCallback(() => {
         setLiked((prev) => !prev);

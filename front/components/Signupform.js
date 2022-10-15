@@ -15,7 +15,7 @@ const Signupform = () => {
 
     useEffect(() => {
         if (me && me.id) {
-            Router.replace('/');
+            Router.replace('/'); // push는 뒤로가기하면 나오는데 애는 안나옴
         }
     }, [me && me.id]);
 
@@ -176,5 +176,5 @@ const Box=styled.div`
     height:40px; 
 `;
 const ErrorMessage = styled.div`
-  color: red;
+    color: red;
 `;
