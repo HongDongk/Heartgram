@@ -1,24 +1,46 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useState, useEffect } from 'react';
 import useInput from '../hooks/useInput';
+import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import Link from 'next/link';
 import { Form, Input, Checkbox, Button } from 'antd'
 import Router from "next/router";
 
+import { SIGN_UP_REQUEST } from '../reducers/user';
 
 const Signupform = () => {
+
+    const dispatch = useDispatch();
+    const { signUpLoading, signUpDone, signUpError, me } = useSelector((state) => state.user);
+
+    useEffect(() => {
+        if (me && me.id) {
+            Router.replace('/');
+        }
+    }, [me && me.id]);
+
+    useEffect(() => {
+        if (signUpDone) {
+            Router.replace('/');
+        }
+    }, [signUpDone]);
+    
+    useEffect(() => {
+        if (signUpError) {
+            alert(signUpError);
+        }
+    }, [signUpError]);
+    
 
     const [email, onChangeEmail] = useInput('');
     const [nickname, onChangeNickname] = useInput('');
     const [password, onChangePassword] = useInput('');
-
     const [passwordCheck, setPasswordCheck] = useState('');
     const [passwordError, setPasswordError] = useState(false);
     const onChangePasswordCheck = useCallback((e) => {
         setPasswordCheck(e.target.value);
         setPasswordError(e.target.value !== password);
     }, [password]);
-
     const [term, setTerm] = useState('');
     const [termError, setTermError] = useState(false);
     const onChangeTerm = useCallback((e) => {
@@ -33,8 +55,10 @@ const Signupform = () => {
         if (!term) {
             return setTermError(true);
         }
-        window.alert("회원가입이 완료되었습니다!");
-        Router.push("/");
+        dispatch({
+            type: SIGN_UP_REQUEST,
+            data: { email, password, nickname },
+        });
     }, [email, password, passwordCheck, term]);
 
 
@@ -88,7 +112,7 @@ const Signupform = () => {
                     <Checkbox name="user-term" checked={term} onChange={onChangeTerm}>Dongkeun을 기억해주세요</Checkbox>
                     {termError && <ErrorMessage>약관에 동의하셔야 합니다.</ErrorMessage>}
                 </Check>
-                <div><Submit type="primary" htmlType="submit">SignUp</Submit></div>       
+                <div><Submit type="primary" htmlType="submit" loading={signUpLoading}>SignUp</Submit></div>       
             </FormWrapper>
             <Box><div>Have an account? &nbsp;&nbsp;&nbsp;&nbsp;</div><Link href="/"><a>Log In</a></Link></Box>
         </Content>
