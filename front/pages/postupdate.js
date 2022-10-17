@@ -10,7 +10,6 @@ import { LOAD_POSTS_REQUEST } from '../reducers/post';
 
 const Postupdate = () => {
 
-
     const dispatch = useDispatch();
     const { mainPosts, hasMorePosts, loadPostsLoading } = useSelector((state) => state.post);
     const [ref, inView] = useInView();

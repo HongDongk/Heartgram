@@ -1,12 +1,11 @@
-import React, { useCallback, useState} from 'react';
+import React, { useCallback, useState, useEffect} from 'react';
 import Link from 'next/link';
 import { useSelector, useDispatch } from 'react-redux';
 import styled, { createGlobalStyle }  from 'styled-components';
 import { Input } from 'antd';
 import { HomeFilled , UserOutlined, HeartOutlined, HeartTwoTone, PlusSquareOutlined } from '@ant-design/icons';
 
-import { logoutRequestAction } from '../reducers/user';
-
+import { LOAD_USER_REQUEST, LOG_OUT_REQUEST } from '../reducers/user';
 
 const Global = createGlobalStyle`
    a {
@@ -27,8 +26,17 @@ const TopMenu = () => {
     const dispatch = useDispatch();
     const [liked, setLiked] = useState(false);
 
+
+    useEffect(() => {
+        dispatch({
+            type: LOAD_USER_REQUEST,
+        });
+    }, []);
+    
     const onLogout = useCallback(() => {
-        dispatch(logoutRequestAction());
+        dispatch({
+            type: LOG_OUT_REQUEST,
+        });
     }, []);
 
     const HeartClick = useCallback(() => {

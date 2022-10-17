@@ -59,36 +59,6 @@ export const ADD_COMMENT_SUCCESS = 'ADD_COMMENT_SUCCESS';
 export const ADD_COMMENT_FAILURE = 'ADD_COMMENT_FAILURE';
 
 
-export const addPost = (data) => ({
-    type: ADD_POST_REQUEST,
-    data,
-});
-  
-export const addComment = (data) => ({
-    type: ADD_COMMENT_REQUEST,
-    data,
-});
-
-const dummyPost = (data) => ({
-    id: data.id,
-    content: data.content,
-    User: {
-      id: 1,
-      nickname: '동근',
-    },
-    Images: [],
-    Comments: [],
-});
-  
-const dummyComment = (data) => ({
-    id: shortId.generate(),
-    content: data,
-    User: {
-      id: 1,
-      nickname: '동근',
-    },
-});
-
 const reducer = (state = initialState, action) => produce(state, (draft) => {
     switch (action.type) {
         // 게시글 로딩
@@ -116,7 +86,7 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
         case ADD_POST_SUCCESS:
             draft.addPostLoading = false;
             draft.addPostDone = true;
-            draft.mainPosts.unshift(dummyPost(action.data)); //맨앞에 추가해서 기존 배열 반환
+            draft.mainPosts.unshift(action.data);  //맨앞에 추가해서 기존 배열 반환
             break;
         case ADD_POST_FAILURE:
             draft.addPostLoading = false;
@@ -144,8 +114,8 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
             draft.addCommentError = null;
             break;
         case ADD_COMMENT_SUCCESS: 
-            const post = draft.mainPosts.find((v) => v.id === action.data.postId);
-            post.Comments.push(dummyComment(action.data.content));
+            const post = draft.mainPosts.find((v) => v.id === action.data.PostId);
+            post.Comments.push(action.data);
             draft.addCommentLoading = false;
             draft.addCommentDone = true;
             break;

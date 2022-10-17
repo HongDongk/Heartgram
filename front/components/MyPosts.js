@@ -17,10 +17,11 @@ import { REMOVE_POST_REQUEST } from '../reducers/post';
 const MyPosts = () => {
     
     const dispatch = useDispatch();
-    const { removePostLoading } = useSelector((state) => state.post);
+    const { me } = useSelector((state) => state.user);
+    const { mainPosts, removePostLoading } = useSelector((state) => state.post);
     const [commentFormOpened, setCommentFormOpened] = useState(false);
     const [liked, setLiked] = useState(false);
-    const { me } = useSelector((state) => state.user);
+    
     const id = me && me.id;
 
     const onToggleLike = useCallback(() => {
@@ -40,7 +41,7 @@ const MyPosts = () => {
 
     return (
         <CardWrapper>
-          <User><a><Avatar>{post.User.nickname[0]}</Avatar></a>&nbsp;&nbsp;&nbsp;{post.User.nickname}</User>
+          <User><a><Avatar>{me.nickname[0]}</Avatar></a>&nbsp;&nbsp;&nbsp;{post.User.nickname}</User>
           <SCard 
             cover={ <PostImages images={post.Images} /> }
             actions={[

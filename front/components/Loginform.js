@@ -13,7 +13,7 @@ const Loginform = () => {
 
     const dispatch = useDispatch();
     
-    const { logInLoading, logInError, logInDone } = useSelector((state) => state.user);
+    const { logInLoading, logInError, me } = useSelector((state) => state.user);
     const [email, onChangeEmail] = useInput('');
     const [password, onChangePassword] = useInput('');
 
@@ -24,16 +24,15 @@ const Loginform = () => {
     }, [logInError]);
 
     useEffect(() => {
-        if (logInDone) {
-          Router.push("/main");
+        if (me && me.id) {
+            Router.push('/main'); // push는 뒤로가기하면 나오는데 애는 안나옴
         }
-    }, [logInDone]);
-
+    }, [me && me.id]);
 
     const onSubmitForm = useCallback(() => {
         dispatch({
             type: LOG_IN_REQUEST,
-            data: { email, password },
+            data: { email, password }
         });
     }, [email, password]);
 

@@ -1,13 +1,27 @@
+import React, { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { END } from 'redux-saga';
+import axios from 'axios';
 import styled from 'styled-components';
+
 import Loginform from "../components/Loginform";
 import Image from "next/image";
-
+import { LOAD_USER_REQUEST } from '../reducers/user';
 import Heart from "../img/Heart.png";
 import AppLayout from '../components/AppLayout';
 
 
 
 const Home = () => {
+
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        dispatch({
+          type: LOAD_USER_REQUEST,
+        });
+    }, []);
+
     return (
         <AppLayout>
             <Main>
@@ -28,3 +42,5 @@ const Main = styled.div`
     justify-content:space-around;
     background-color: #E6E6FA;
 `;
+
+

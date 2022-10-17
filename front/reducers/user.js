@@ -2,6 +2,9 @@ import produce from '../util/produce';
 
 export const initialState = {
     
+    loadUserLoading: false, // 유저 정보 가져오기 시도중
+    loadUserDone: false,
+    loadUserError: null,
     logInLoading: false, // 로그인 시도중
     logInDone: false,
     logInError: null,
@@ -27,6 +30,10 @@ export const initialState = {
     signUpData: {},
     loginData: {},
 };
+
+export const LOAD_USER_REQUEST = 'LOAD_USER_REQUEST';
+export const LOAD_USER_SUCCESS = 'LOAD_USER_SUCCESS';
+export const LOAD_USER_FAILURE = 'LOAD_USER_FAILURE';
 
 export const LOG_IN_REQUEST = 'LOG_IN_REQUEST';
 export const LOG_IN_SUCCESS = 'LOG_IN_SUCCESS';
@@ -59,21 +66,23 @@ export const UNFOLLOWING_FAILURE = 'UNFOLLOWING_FAILURE';
 export const ADD_POST_TO_ME = 'ADD_POST_TO_ME';
 export const REMOVE_POST_OF_ME = 'REMOVE_POST_OF_ME';
 
-const dummyUser = (data) => ({
-    ...data,
-    nickname: '동근이',
-    id: 1,
-    Posts: [{ id: 1 }],
-    Followings: [{ id: '부기초' }, { id: 'Chanho Lee' }, { id: 'neue zeal' }],
-    Followers: [{ id: '부기초' }, { id: 'Chanho Lee' }, { id: 'Hi' }],
-});
-
-export const logoutRequestAction = () => ({
-    type: LOG_OUT_REQUEST,
-});
 
 const reducer = (state = initialState, action) => produce(state, (draft) => {
     switch (action.type) {
+        case LOAD_USER_REQUEST:
+            draft.loadUserLoading = true;
+            draft.loadUserError = null;
+            draft.loadUserDone = false;
+            break;
+        case LOAD_USER_SUCCESS:
+            draft.loadUserLoading = false;
+            draft.me = action.data;
+            draft.loadUserDone = true;
+            break;
+        case LOAD_USER_FAILURE:
+            draft.loadUserLoading = false;
+            draft.loadUserError = action.error;
+            break;
         // 로그인
         case LOG_IN_REQUEST:
             draft.logInLoading = true;

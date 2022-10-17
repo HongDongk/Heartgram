@@ -1,6 +1,9 @@
 import { all, delay, fork, put, takeLatest, call} from 'redux-saga/effects';
 import axios from 'axios';
 import {
+  LOAD_USER_FAILURE,
+  LOAD_USER_REQUEST,
+  LOAD_USER_SUCCESS,
   LOG_IN_FAILURE,
   LOG_IN_REQUEST,
   LOG_IN_SUCCESS,
@@ -23,6 +26,7 @@ import {
   UNFOLLOWING_REQUEST,
   UNFOLLOWING_SUCCESS,
 } from '../reducers/user';
+
 
 // 로그인
 function logInAPI(data) {
@@ -66,7 +70,7 @@ function* logOut() {
 // 회원가입
 function signUpAPI(data) {
     return axios.post('/user', data);
-  }
+}
   
 function* signUp(action) {
     try {
@@ -82,6 +86,27 @@ function* signUp(action) {
       });
     }
 }
+
+function loadUserAPI() {
+  return axios.get('/user'); 
+}
+
+function* loadUser(action) {
+  try {
+    const result = yield call(loadUserAPI, action.data);
+    yield put({
+      type: LOAD_USER_SUCCESS,
+      data: result.data,
+    });
+  } catch (err) {
+    console.error(err);
+    yield put({
+      type: LOAD_USER_FAILURE,
+      error: err.response.data,
+    });
+  }
+}
+
 // 닉네임 변경
 function changeNicknameAPI(data) {
     return axios.patch('/user/nickname', { nickname: data });
@@ -168,6 +193,9 @@ function* unfollowing(action) {
   }
 }
 
+function* watchLoadUser() {
+  yield takeLatest(LOAD_USER_REQUEST, loadUser);
+}
 
 function* watchLogIn() {
     yield takeLatest(LOG_IN_REQUEST, logIn);
@@ -204,6 +232,7 @@ export default function* userSaga() {
       fork(watchLogOut),
       fork(watchSignUp),
       fork(watchChangeNickname),
+      fork(watchLoadUser),
       fork(watchFollow),
       fork(watchUnfollow),
       fork(watchUnfollowing),
