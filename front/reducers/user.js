@@ -187,7 +187,6 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
             draft.unfollowingLoading = false;
             draft.unfollowingError = action.error;
             break;
-        
         case ADD_POST_TO_ME:
             draft.me.Posts.unshift({id:action.data});
         break;

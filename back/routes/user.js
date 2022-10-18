@@ -8,6 +8,7 @@ const { isLoggedIn, isNotLoggedIn } = require('./middlewares');
 
 const router = express.Router();
 
+// 유저정보 불러오기
 router.get('/', async (req, res, next) => { // GET /user
   try {
     if (req.user) {
@@ -39,6 +40,7 @@ router.get('/', async (req, res, next) => { // GET /user
 }
 });
 
+// 로그인
 router.post('/login', isNotLoggedIn, (req, res, next) => {
   passport.authenticate('local', (err, user, info) => {
     if (err) {
@@ -76,6 +78,14 @@ router.post('/login', isNotLoggedIn, (req, res, next) => {
   })(req, res, next);
 });
 
+//로그아웃
+router.post('/logout', isLoggedIn, (req, res) => {
+  req.logout();
+  req.session.destroy();
+  res.send('ok');
+});
+
+// 회원가입
 router.post('/', isNotLoggedIn, async (req, res, next) => { // POST /user/
     try{
         const exUser = await User.findOne({
@@ -99,10 +109,19 @@ router.post('/', isNotLoggedIn, async (req, res, next) => { // POST /user/
     }   
 });
 
-router.post('/logout', isLoggedIn, (req, res) => {
-    req.logout();
-    req.session.destroy();
-    res.send('ok');
+//닉네임 수정
+router.patch('/nickname', isLoggedIn, async (req, res, next) => {
+    try {
+      await User.update({
+        nickname: req.body.nickname,
+      }, {
+        where: { id: req.user.id },
+      });
+      res.status(200).json({ nickname: req.body.nickname });
+    } catch (error) {
+      console.error(error);
+      next(error);
+    }
 });
 
 

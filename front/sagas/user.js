@@ -27,6 +27,26 @@ import {
   UNFOLLOWING_SUCCESS,
 } from '../reducers/user';
 
+//유저 불러오기
+function loadUserAPI() {
+  return axios.get('/user'); 
+}
+
+function* loadUser(action) {
+  try {
+    const result = yield call(loadUserAPI, action.data);
+    yield put({
+      type: LOAD_USER_SUCCESS,
+      data: result.data,
+    });
+  } catch (err) {
+    console.error(err);
+    yield put({
+      type: LOAD_USER_FAILURE,
+      error: err.response.data,
+    });
+  }
+}
 
 // 로그인
 function logInAPI(data) {
@@ -87,38 +107,17 @@ function* signUp(action) {
     }
 }
 
-function loadUserAPI() {
-  return axios.get('/user'); 
-}
-
-function* loadUser(action) {
-  try {
-    const result = yield call(loadUserAPI, action.data);
-    yield put({
-      type: LOAD_USER_SUCCESS,
-      data: result.data,
-    });
-  } catch (err) {
-    console.error(err);
-    yield put({
-      type: LOAD_USER_FAILURE,
-      error: err.response.data,
-    });
-  }
-}
-
 // 닉네임 변경
 function changeNicknameAPI(data) {
     return axios.patch('/user/nickname', { nickname: data });
-  }
+}
   
 function* changeNickname(action) {
     try {
-      // const result = yield call(changeNicknameAPI, action.data);
-      yield delay(1000);
+      const result = yield call(changeNicknameAPI, action.data);
       yield put({
         type: CHANGE_NICKNAME_SUCCESS,
-        data: action.data,
+        data: result.data,
       });
     } catch (err) {
       console.error(err);
@@ -128,6 +127,7 @@ function* changeNickname(action) {
       });
     }
 }
+
 // 팔로우
 function followAPI() {
     return axios.post('/api/follow');
@@ -149,6 +149,7 @@ function* follow(action) {
       });
     }
 }
+
 // 언팔로우
 function unfollowAPI() {
     return axios.post('/api/unfollow');

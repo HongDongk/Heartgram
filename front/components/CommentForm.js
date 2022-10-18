@@ -43,11 +43,11 @@ function CommentForm({ post }) {
 
 CommentForm.propTypes = {
     post: PropTypes.shape({
-        id: PropTypes.string,
+        id: PropTypes.number,
         User: PropTypes.object,
         UserId: PropTypes.number,
         content: PropTypes.string,
-        createdAt: PropTypes.object,
+        createdAt: PropTypes.string,
         Comments: PropTypes.arrayOf(PropTypes.any),
         Images: PropTypes.arrayOf(PropTypes.any),
     }).isRequired,

@@ -11,7 +11,7 @@ const UserEditForm = () => {
     const dispatch = useDispatch();
     const [email, onChangeEmail] = useInput('');
     const [password, onChangePassword] = useInput('');
-    const [nickname, onChangeNickname] = useInput('');
+    const [nickname, onChangeNickname, setNickname] = useInput('');
     const { me } = useSelector((state) => state.user);
 
     const { changeNicknameLoading, changeNicknameDone } = useSelector((state) => state.user);
@@ -25,7 +25,7 @@ const UserEditForm = () => {
     
     useEffect(() => {
         if (changeNicknameDone) {
-          setText('');
+            setNickname('');
         }
     }, [changeNicknameDone]);
 
