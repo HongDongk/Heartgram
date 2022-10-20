@@ -6,13 +6,20 @@ import { useInView } from 'react-intersection-observer';
 import PostCard from '../components/PostCard';
 import TopMenu from "../components/TopMenu"
 import { LOAD_POSTS_REQUEST } from '../reducers/post';
+import { LOAD_USER_REQUEST } from '../reducers/user';
 
 
 const Main = () => {
+    
     const dispatch = useDispatch();
-    const { me } = useSelector((state) => state.user);
     const { mainPosts, hasMorePosts, loadPostsLoading } = useSelector((state) => state.post);
     const [ref, inView] = useInView();
+
+    useEffect(() => {
+        dispatch({
+            type: LOAD_USER_REQUEST,
+        });
+    }, []);
 
     useEffect(
         () => {
@@ -26,6 +33,8 @@ const Main = () => {
         },
         [inView, hasMorePosts, loadPostsLoading, mainPosts],
     );
+
+   
 
     return(
             <Content>
@@ -52,6 +61,7 @@ const Content = styled.div`
 const MainContent = styled.div`
     width:1050px;
     padding: 50px 200px;
+    min-height:calc(100vh - 70px);
 `;
 
 

@@ -7,12 +7,19 @@ import TopMenu from "../components/TopMenu"
 import PostForm from "../components/Postform";
 import PostCard from "../components/PostCard";
 import { LOAD_POSTS_REQUEST } from '../reducers/post';
+import { LOAD_USER_REQUEST } from '../reducers/user';
 
 const Postupdate = () => {
 
     const dispatch = useDispatch();
     const { mainPosts, hasMorePosts, loadPostsLoading } = useSelector((state) => state.post);
     const [ref, inView] = useInView();
+
+    useEffect(() => {
+        dispatch({
+            type: LOAD_USER_REQUEST,
+        });
+    }, []);
 
     useEffect(
         () => {
@@ -24,10 +31,9 @@ const Postupdate = () => {
             });
         }
         },
-        [hasMorePosts, loadPostsLoading, mainPosts],
+        [inView, hasMorePosts, loadPostsLoading, mainPosts],
     );
-
-
+    
     return(
         <Content>
              <TopMenu/>
@@ -54,4 +60,5 @@ const Content = styled.div`
 const MainContent = styled.div`
     width:1050px;
     padding: 50px 200px;
+    min-height:calc(100vh - 350px);
 `;

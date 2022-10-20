@@ -1,24 +1,51 @@
-import React, { useCallback , useState } from 'react';
-import { Button, Modal } from 'antd';
+import React, { useCallback , useState,  useEffect} from 'react';
+import { Button, Modal, Form, Input } from 'antd';
 import { useSelector, useDispatch } from 'react-redux';
 import styled from 'styled-components';
 
 import modal from '../hooks/modal';
-import UserEditForm from './UserEditForm';
 import UnFollow from './UnFollow';
-
+import useInput from '../hooks/useInput';
+import { CHANGE_NICKNAME_REQUEST, LOAD_FOLLOWERS_REQUEST, LOAD_FOLLOWINGS_REQUEST } from '../reducers/user';
 
 const UserProfile = () => {
+
+    const dispatch = useDispatch();
+    const [email, onChangeEmail] = useInput('');
+    const [password, onChangePassword] = useInput('');
+    const [nickname, onChangeNickname, setNickname] = useInput('');
+    const { changeNicknameLoading, changeNicknameDone, me } = useSelector((state) => state.user);
+
+    useEffect(() => {
+        dispatch({
+            type: LOAD_FOLLOWERS_REQUEST,
+        });
+        dispatch({
+            type: LOAD_FOLLOWINGS_REQUEST,
+        });
+    }, []);
+
+    const onSubmit = useCallback(() => {
+        dispatch({
+            type: CHANGE_NICKNAME_REQUEST,
+            data: nickname,
+        });
+        handleCancel();
+    }, [nickname]);
     
+    useEffect(() => {
+        if (changeNicknameDone) {
+            setNickname('');
+        }
+    }, [changeNicknameDone]);
+
     const [open, showModal, handleOk, handleCancel] = modal(false);
     const [open2, showModal2, handleOk2, handleCancel2] = modal(false);
     const [open3, showModal3, handleOk3, handleCancel3] = modal(false);
 
-    const { me } = useSelector((state) => state.user);
-
     return (
-        <Profile>
-            <Avatar>{me.nickname[0]}{me.nickname[1]}</Avatar>
+        <div>{me && <Profile>
+            <Avatar>{me.nickname[0]}</Avatar>
             <Email>{me.email}</Email>
             <Top>
                 <Button onClick={showModal}>Edit Profile</Button>
@@ -27,24 +54,57 @@ const UserProfile = () => {
                     title="프로필 수정하기" 
                     onOk={handleOk} 
                     onCancel={handleCancel}
-                    footer={[]}
+                    footer={[<Button key="back" onClick={handleCancel}>
+                                뒤로가기
+                             </Button>,
+                             <Button key="submit" type="primary" loading={changeNicknameLoading} onClick={onSubmit} htmlType="submit">
+                                수정하기
+                             </Button>
+                           ]}
                 >
-                    <UserEditForm/>
+                    <FormWrapper layout="vertical" autoComplete="off">
+                        <Form.Item label="이메일 수정" name="changeemail">
+                            <SInput 
+                                name="user-email" 
+                                placeholder= {me.email} 
+                                type="email" 
+                                value={email} 
+                                onChange={onChangeEmail} 
+                            />
+                        </Form.Item>
+                        <Form.Item label="비밀번호 수정" name="changepassword">
+                            <SInput 
+                                name="user-password" 
+                                placeholder={me.password} 
+                                type="password" 
+                                value={password} 
+                                onChange={onChangePassword} 
+                            />
+                        </Form.Item>
+                        <Form.Item label="닉네임 수정" name="changenickname">
+                            <SInput 
+                                name="user-nickname" 
+                                placeholder={me.nickname} 
+                                type="string" 
+                                value={nickname} 
+                                onChange={onChangeNickname} 
+                            />
+                        </Form.Item>
+                    </FormWrapper>
                 </SModal>        
             </Top>
-            
             <Info>
                 <Sbutton><Count>{me.Posts.length}</Count> 게시글</Sbutton>
                 <Sbutton onClick={showModal2}><Count>{me.Followers.length}</Count> 팔로워</Sbutton>
                 <Modal open={open2} width={330} title="팔로워" onOk={handleOk2} onCancel={handleCancel2} footer={[]}>
-                    <div>{me.Followers.map((a) => (<Items key={a.id}>{a.id} <UnFollow header="팔로워" unfollow={a}/></Items>))}</div>
+                    <div>{me.Followers.map((a) => (<Items key={a.id}>{a.email} <UnFollow header="팔로워" unfollow={a}/></Items>))}</div>
                 </Modal> 
                 <Sbutton onClick={showModal3}><Count>{me.Followings.length}</Count> 팔로잉</Sbutton>
                 <Modal open={open3} width={330} title="팔로잉" onOk={handleOk3} onCancel={handleCancel3} footer={[]}>
-                    <div>{me.Followings.map((a) => (<Items key={a.id}>{a.id} <UnFollow header="팔로잉" unfollow={a}/></Items>))}</div>
+                    <div>{me.Followings.map((a) => (<Items key={a.id}>{a.email} <UnFollow header="팔로잉" unfollow={a}/></Items>))}</div>
                 </Modal>            
             </Info>      
-        </Profile>
+        </Profile>}</div>
     );
 };
 
@@ -116,4 +176,13 @@ const Items = styled.div`
     justify-content:space-between;
     align-items:center;
     margin-bottom:10px;
+`;
+
+const SInput=styled(Input)`
+    width:350px;
+    border-radius:6px;  
+`;
+
+const FormWrapper=styled(Form)`
+    width:350px;
 `;

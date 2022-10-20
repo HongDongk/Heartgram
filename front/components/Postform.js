@@ -62,10 +62,10 @@ export default PostForm;
 
 const SForm =styled(Form)`
     width:100%;
+    height:280px;
     padding: 0 32%;
     padding-top:50px;
-    padding-bottom:20px;
-    background-color:		#F8F8FF;
+    background-color:#F8F8FF;
 `;
 
 const SInput= styled(Input.TextArea)`

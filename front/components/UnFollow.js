@@ -1,6 +1,5 @@
 import React, { useCallback } from 'react';
 import { Button } from 'antd';
-import {  } from '@ant-design/icons';
 import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
 import styled from 'styled-components';

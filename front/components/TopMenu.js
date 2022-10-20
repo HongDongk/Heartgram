@@ -4,8 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import styled, { createGlobalStyle }  from 'styled-components';
 import { Input } from 'antd';
 import { HomeFilled , UserOutlined, HeartOutlined, HeartTwoTone, PlusSquareOutlined } from '@ant-design/icons';
-
-import { LOAD_USER_REQUEST, LOG_OUT_REQUEST } from '../reducers/user';
+import { LOG_OUT_REQUEST } from '../reducers/user';
 
 const Global = createGlobalStyle`
    a {
@@ -26,13 +25,6 @@ const TopMenu = () => {
     const dispatch = useDispatch();
     const [liked, setLiked] = useState(false);
 
-
-    useEffect(() => {
-        dispatch({
-            type: LOAD_USER_REQUEST,
-        });
-    }, []);
-    
     const onLogout = useCallback(() => {
         dispatch({
             type: LOG_OUT_REQUEST,
@@ -52,13 +44,16 @@ const TopMenu = () => {
                 <TopItem>
                     <SearchBox placeholder="Find new friend" size="large"/>
                 </TopItem>
-                <Util>
-                  <TopItem><Link href="/main"><a><HomeFilled /></a></Link></TopItem>
-                  <TopItem>{liked ? <Heart twoToneColor="red" onClick={HeartClick} /> : <HeartEmpty onClick={HeartClick}/>}</TopItem>
-                  <TopItem><Link href="/postupdate"><a><PlusSquareOutlined /></a></Link></TopItem>
-                  <TopItem><Link href="/profile"><a><UserOutlined /></a></Link></TopItem>      
-                </Util>  
-                <LogIn>{me && <SButton onClick={onLogout}><Link href="/"><Sa>LogOut</Sa></Link></SButton>}</LogIn>     
+                {me &&
+                    <Util>
+                        <TopItem><Link href="/main"><a><HomeFilled /></a></Link></TopItem>
+                        <TopItem>{liked ? <Heart twoToneColor="red" onClick={HeartClick} /> : <HeartEmpty onClick={HeartClick}/>}</TopItem>
+                        <TopItem><Link href="/postupdate"><a><PlusSquareOutlined /></a></Link></TopItem>
+                        <TopItem><Link href="/profile"><a><UserOutlined /></a></Link></TopItem>      
+                    </Util> 
+                }
+                {me && <LogIn>{<SButton onClick={onLogout}><Sa>LogOut</Sa></SButton>}</LogIn>}
+                   
             </Top>
         </div>
     );
