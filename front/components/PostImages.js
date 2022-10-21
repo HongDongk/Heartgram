@@ -21,7 +21,7 @@ const PostImages = ({ images }) => {
     return (
         <Pictures>
             <Slick {...settings}>
-                {images.map((v) => (<img key={v.src} src={v.src} alt={v.src} />))}
+                {images.map((v) => (<img key={v.src} src={`http://localhost:3065/${v.src}`} alt={v.src} />))}
             </Slick>
         </Pictures>
     );

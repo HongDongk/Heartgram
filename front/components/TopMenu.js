@@ -5,6 +5,7 @@ import styled, { createGlobalStyle }  from 'styled-components';
 import { Input } from 'antd';
 import { HomeFilled , UserOutlined, HeartOutlined, HeartTwoTone, PlusSquareOutlined } from '@ant-design/icons';
 import { LOG_OUT_REQUEST } from '../reducers/user';
+import Router from "next/router";
 
 const Global = createGlobalStyle`
    a {
@@ -21,7 +22,7 @@ const Global = createGlobalStyle`
 
 const TopMenu = () => {
 
-    const { me } = useSelector((state) => state.user);
+    const { me, logOutError, logOutDone } = useSelector((state) => state.user);
     const dispatch = useDispatch();
     const [liked, setLiked] = useState(false);
 
@@ -30,6 +31,13 @@ const TopMenu = () => {
             type: LOG_OUT_REQUEST,
         });
     }, []);
+
+    useEffect(() => {
+        if (logOutError) {
+            alert(logOutError);
+        }
+    }, [logOutError]);
+
 
     const HeartClick = useCallback(() => {
         setLiked((prev) => !prev);

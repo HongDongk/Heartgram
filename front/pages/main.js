@@ -12,29 +12,36 @@ import { LOAD_USER_REQUEST } from '../reducers/user';
 const Main = () => {
     
     const dispatch = useDispatch();
-    const { mainPosts, hasMorePosts, loadPostsLoading } = useSelector((state) => state.post);
+    const { mainPosts, hasMorePosts, loadPostsLoading, retweetError } = useSelector((state) => state.post);
     const [ref, inView] = useInView();
+
+    useEffect(
+        () => {
+            if (inView && hasMorePosts && !loadPostsLoading) {
+                const lastId = mainPosts[mainPosts.length - 1]?.id;
+                dispatch({
+                    type: LOAD_POSTS_REQUEST,
+                    lastId,
+                });
+            }
+        },
+        [inView, hasMorePosts, loadPostsLoading, mainPosts],
+    );
+    
+    useEffect(() => {
+        if (retweetError) {
+            alert(retweetError);
+        }
+    }, [retweetError]);
 
     useEffect(() => {
         dispatch({
             type: LOAD_USER_REQUEST,
         });
+        dispatch({
+            type: LOAD_POSTS_REQUEST,
+        });
     }, []);
-
-    useEffect(
-        () => {
-        if (inView && hasMorePosts && !loadPostsLoading) {
-            const lastId = mainPosts[mainPosts.length - 1]?.id;
-            dispatch({
-                type: LOAD_POSTS_REQUEST,
-                lastId,
-            });
-        }
-        },
-        [inView, hasMorePosts, loadPostsLoading, mainPosts],
-    );
-
-   
 
     return(
             <Content>

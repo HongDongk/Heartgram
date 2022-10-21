@@ -13,6 +13,9 @@ export const initialState = {
     removePostLoading: false, // 게시글 삭제
     removePostDone: false,
     removePostError: null,
+    uploadImagesLoading: false, // 게시글 이미지 추가
+    uploadImagesDone: false,
+    uploadImagesError: null,
     likePostLoading: false,   // 좋아요 추가
     likePostDone: false,
     likePostError: null,
@@ -22,6 +25,9 @@ export const initialState = {
     addCommentLoading: false, // 커맨트 추가
     addCommentDone: false,
     addCommentError: null,
+    retweetLoading: false, // 리트윗
+    retweetDone: false,
+    retweetError: null,
 };
 
 export const LOAD_POSTS_REQUEST = 'LOAD_POSTS_REQUEST';
@@ -36,6 +42,10 @@ export const REMOVE_POST_REQUEST = 'REMOVE_POST_REQUEST';
 export const REMOVE_POST_SUCCESS = 'REMOVE_POST_SUCCESS';
 export const REMOVE_POST_FAILURE = 'REMOVE_POST_FAILURE';
 
+export const UPLOAD_IMAGES_REQUEST = 'UPLOAD_IMAGES_REQUEST';
+export const UPLOAD_IMAGES_SUCCESS = 'UPLOAD_IMAGES_SUCCESS';
+export const UPLOAD_IMAGES_FAILURE = 'UPLOAD_IMAGES_FAILURE';
+
 export const LIKE_POST_REQUEST = 'LIKE_POST_REQUEST';
 export const LIKE_POST_SUCCESS = 'LIKE_POST_SUCCESS';
 export const LIKE_POST_FAILURE = 'LIKE_POST_FAILURE';
@@ -47,6 +57,12 @@ export const UNLIKE_POST_FAILURE = 'UNLIKE_POST_FAILURE';
 export const ADD_COMMENT_REQUEST = 'ADD_COMMENT_REQUEST';
 export const ADD_COMMENT_SUCCESS = 'ADD_COMMENT_SUCCESS';
 export const ADD_COMMENT_FAILURE = 'ADD_COMMENT_FAILURE';
+
+export const RETWEET_REQUEST = 'RETWEET_REQUEST';
+export const RETWEET_SUCCESS = 'RETWEET_SUCCESS';
+export const RETWEET_FAILURE = 'RETWEET_FAILURE';
+
+export const REMOVE_IMAGE = 'REMOVE_IMAGE';
 
 
 const reducer = (state = initialState, action) => produce(state, (draft) => {
@@ -60,8 +76,8 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
         case LOAD_POSTS_SUCCESS:
             draft.loadPostsLoading = false;
             draft.loadPostsDone = true;
-            draft.mainPosts = action.data.concat(draft.mainPosts);  //맨앞에 추가해서 새로운 배열 반환
-            draft.hasMorePosts = draft.mainPosts.length === 10;
+            draft.mainPosts = draft.mainPosts.concat(action.data);  //맨앞에 추가해서 새로운 배열 반환
+            draft.hasMorePosts = action.data.length === 10;
             break;
         case LOAD_POSTS_FAILURE:
             draft.loadPostsLoading = false;
@@ -77,6 +93,7 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
             draft.addPostLoading = false;
             draft.addPostDone = true;
             draft.mainPosts.unshift(action.data);  //맨앞에 추가해서 기존 배열 반환
+            draft.imagePaths = [];
             break;
         case ADD_POST_FAILURE:
             draft.addPostLoading = false;
@@ -96,6 +113,26 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
         case REMOVE_POST_FAILURE:
             draft.removePostLoading = false;
             draft.removePostError = action.error;
+            break;
+        // 게시글 이미지추가
+        case UPLOAD_IMAGES_REQUEST:
+            draft.uploadImagesLoading = true;
+            draft.uploadImagesDone = false;
+            draft.uploadImagesError = null;
+            break;
+        case UPLOAD_IMAGES_SUCCESS: {
+            draft.imagePaths = action.data;
+            draft.uploadImagesLoading = false;
+            draft.uploadImagesDone = true;
+            break;
+        }
+        case UPLOAD_IMAGES_FAILURE:
+            draft.uploadImagesLoading = false;
+            draft.uploadImagesError = action.error;
+            break;
+        // 게시글 프런트에서 이미지제거
+        case REMOVE_IMAGE:
+            draft.imagePaths = draft.imagePaths.filter((v, i) => i !== action.data);
             break;
         // 좋아요 추가
         case LIKE_POST_REQUEST:
@@ -146,6 +183,22 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
         case ADD_COMMENT_FAILURE:
             draft.addCommentLoading = false;
             draft.addCommentError = action.error;
+            break;
+        // 리트윗
+        case RETWEET_REQUEST:
+            draft.retweetLoading = true;
+            draft.retweetDone = false;
+            draft.retweetError = null;
+            break;
+        case RETWEET_SUCCESS: {
+            draft.retweetLoading = false;
+            draft.retweetDone = true;
+            draft.mainPosts.unshift(action.data);
+            break;
+        }
+        case RETWEET_FAILURE:
+            draft.retweetLoading = false;
+            draft.retweetError = action.error;
             break;
         default:
             break;
