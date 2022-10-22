@@ -2,11 +2,14 @@ import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import styled  from 'styled-components';
 import { useInView } from 'react-intersection-observer';
+import { END } from 'redux-saga';
+import axios from 'axios';
 
 import PostCard from '../components/PostCard';
 import TopMenu from "../components/TopMenu"
 import { LOAD_POSTS_REQUEST } from '../reducers/post';
 import { LOAD_USER_REQUEST } from '../reducers/user';
+import wrapper from '../store/configureStore';
 
 
 const Main = () => {
@@ -34,15 +37,6 @@ const Main = () => {
         }
     }, [retweetError]);
 
-    useEffect(() => {
-        dispatch({
-            type: LOAD_USER_REQUEST,
-        });
-        dispatch({
-            type: LOAD_POSTS_REQUEST,
-        });
-    }, []);
-
     return(
             <Content>
                 <TopMenu/>
@@ -54,6 +48,23 @@ const Main = () => {
             </Content>   
     );
 };
+
+export const getServerSideProps = wrapper.getServerSideProps((store) => async ({ req }) => {
+    const cookie = req ? req.headers.cookie : '';
+    axios.defaults.headers.Cookie = '';
+    if (req && cookie) {
+      axios.defaults.headers.Cookie = cookie;
+    }
+    store.dispatch({
+      type: LOAD_USER_REQUEST,
+    });
+    store.dispatch({
+      type: LOAD_POSTS_REQUEST,
+    });
+    store.dispatch(END);
+    await store.sagaTask.toPromise();
+});
+  
 
 export default Main;
 

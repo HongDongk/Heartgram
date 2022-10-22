@@ -1,13 +1,16 @@
 import React, { useEffect } from 'react';
-import styled, { createGlobalStyle }  from 'styled-components';
+import styled from 'styled-components';
 import { useSelector, useDispatch } from 'react-redux';
 import { useInView } from 'react-intersection-observer';
+import { END } from 'redux-saga';
+import axios from 'axios';
 
 import TopMenu from "../components/TopMenu"
 import PostForm from "../components/Postform";
 import PostCard from "../components/PostCard";
 import { LOAD_POSTS_REQUEST } from '../reducers/post';
 import { LOAD_USER_REQUEST } from '../reducers/user';
+import wrapper from '../store/configureStore';
 
 const Postupdate = () => {
 
@@ -33,15 +36,6 @@ const Postupdate = () => {
             alert(retweetError);
         }
     }, [retweetError]);
-
-    useEffect(() => {
-        dispatch({
-            type: LOAD_USER_REQUEST,
-        });
-        dispatch({
-            type: LOAD_POSTS_REQUEST,
-        });
-    }, []);
     
     return(
         <Content>
@@ -52,9 +46,24 @@ const Postupdate = () => {
                     <div ref={hasMorePosts && !loadPostsLoading ? ref : undefined} style={{ height: 10 }} />
             </MainContent>
         </Content>       
-    )
+    );
+};
 
-}
+export const getServerSideProps = wrapper.getServerSideProps((store) => async ({ req }) => {
+    const cookie = req ? req.headers.cookie : '';
+    axios.defaults.headers.Cookie = '';
+    if (req && cookie) {
+      axios.defaults.headers.Cookie = cookie;
+    }
+    store.dispatch({
+      type: LOAD_USER_REQUEST,
+    });
+    store.dispatch({
+      type: LOAD_POSTS_REQUEST,
+    });
+    store.dispatch(END);
+    await store.sagaTask.toPromise();
+});
 
 export default Postupdate;
 

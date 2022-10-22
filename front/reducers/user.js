@@ -33,8 +33,7 @@ export const initialState = {
     unfollowDone: false,
     unfollowError: null,
     me: null,
-    signUpData: {},
-    loginData: {},
+    
 };
 
 export const LOAD_USER_REQUEST = 'LOAD_USER_REQUEST';

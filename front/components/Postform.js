@@ -67,18 +67,17 @@ const PostForm = () => {
             <Button onClick={onClickImageUpload}>이미지 업로드</Button>
             <Button type="primary" htmlType="submit" loading={addPostLoading}>올리기</Button>
           </ButtonBox>
-         
         </div>
-        <div>
+        <Preview>
           {imagePaths.map((v,i) => (
-            <div key={v} style={{ display: 'inline-block' }}>
+            <div key={v}>
               <img src={`http://localhost:3065/${v}`} style={{ width: '200px' }} alt={v} />
               <div>
-                <Button onClick={onRemoveImage(i)}>제거</Button>
+                <Button onClick={onRemoveImage(i)}>취소</Button>
               </div>
             </div>
           ))}
-        </div>
+        </Preview>
       </SForm>
     );
 };
@@ -86,22 +85,28 @@ const PostForm = () => {
 export default PostForm;
 
 const SForm =styled(Form)`
-    width:100%;
-    height:280px;
-    padding: 0 32%;
+    text-align:center;
+    width:100vw;
     padding-top:50px;
+    padding-bottom:20px;
     background-color:#F8F8FF;
 `;
 
 const SInput= styled(Input.TextArea)`
-    width:100%;
+    width:40%;
     border-radius:10px;
 `;
 
 const ButtonBox = styled.div`
     margin-top:30px;
-    width:100%;
+    width:70%;
     display:flex;
-    justify-content:flex-end;
+    justify-content:end;
 `;
 
+const Preview = styled.div`
+    width:100vw;
+    margin-top:10px;
+    background-color:white;
+    z-index:10;
+`;

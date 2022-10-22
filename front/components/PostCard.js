@@ -99,7 +99,7 @@ const PostCard = ({ post }) => {
                   <EllipsisOutlined />
                 </Popover>,
             ]}
-            title={post.RetweetId ? `${post.User.nickname}님이 리트윗하셨습니다.` : null}
+            title={post.RetweetId ? `${post.User.nickname}님이 리포스트하셨습니다.` : null}
           >
              {post.RetweetId && post.Retweet? (
                 <RetweetBox>

@@ -1,4 +1,4 @@
-import React, { useCallback, useState, useEffect, useRef } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import Slick from 'react-slick';
@@ -14,9 +14,6 @@ const PostImages = ({ images }) => {
         slidesToShow: 1,
         slidesToScroll: 1
     };
-    
-    const imgEl = useRef();
-
 
     return (
         <Pictures>
