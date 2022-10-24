@@ -1,7 +1,10 @@
 import produce from '../util/produce';
 
 export const initialState = {
-    
+
+    loadMyInfoLoading: false, // 내 정보가져오기 시도중
+    loadMyInfoDone: false,
+    loadMyInfoError: null,
     loadUserLoading: false, // 유저 정보 가져오기 시도중
     loadUserDone: false,
     loadUserError: null,
@@ -14,6 +17,9 @@ export const initialState = {
     signUpLoading: false, // 회원가입 시도중
     signUpDone: false,
     signUpError: null,
+    changeEmailLoading: false, // 이메일 변경 시도중
+    changeEmailDone: false,
+    changeEmailError: null,
     changeNicknameLoading: false, // 닉네임 변경 시도중
     changeNicknameDone: false,
     changeNicknameError: null,
@@ -36,6 +42,10 @@ export const initialState = {
     
 };
 
+export const LOAD_MY_INFO_REQUEST = 'LOAD_MY_INFO_REQUEST';
+export const LOAD_MY_INFO_SUCCESS = 'LOAD_MY_INFO_SUCCESS';
+export const LOAD_MY_INFO_FAILURE = 'LOAD_MY_INFO_FAILURE';
+
 export const LOAD_USER_REQUEST = 'LOAD_USER_REQUEST';
 export const LOAD_USER_SUCCESS = 'LOAD_USER_SUCCESS';
 export const LOAD_USER_FAILURE = 'LOAD_USER_FAILURE';
@@ -51,6 +61,10 @@ export const LOG_OUT_FAILURE = 'LOG_OUT_FAILURE';
 export const SIGN_UP_REQUEST = 'SIGN_UP_REQUEST';
 export const SIGN_UP_SUCCESS = 'SIGN_UP_SUCCESS';
 export const SIGN_UP_FAILURE = 'SIGN_UP_FAILURE';
+
+export const CHANGE_EMAIL_REQUEST = 'CHANGE_EMAIL_REQUEST';
+export const CHANGE_EMAIL_SUCCESS = 'CHANGE_EMAIL_SUCCESS';
+export const CHANGE_EMAIL_FAILURE = 'CHANGE_EMAIL_FAILURE';
 
 export const CHANGE_NICKNAME_REQUEST = 'CHANGE_NICKNAME_REQUEST';
 export const CHANGE_NICKNAME_SUCCESS = 'CHANGE_NICKNAME_SUCCESS';
@@ -82,7 +96,22 @@ export const REMOVE_POST_OF_ME = 'REMOVE_POST_OF_ME';
 
 const reducer = (state = initialState, action) => produce(state, (draft) => {
     switch (action.type) {
-        // 유저 정보 가져오기
+        // 내 정보 가져오기
+        case LOAD_MY_INFO_REQUEST:
+            draft.loadUserLoading = true;
+            draft.loadUserError = null;
+            draft.loadUserDone = false;
+            break;
+        case LOAD_MY_INFO_SUCCESS:
+            draft.loadUserLoading = false;
+            draft.me = action.data;
+            draft.loadUserDone = true;
+            break;
+        case LOAD_MY_INFO_FAILURE:
+            draft.loadUserLoading = false;
+            draft.loadUserError = action.error;
+            break;
+        // 유저 정보가져오기
         case LOAD_USER_REQUEST:
             draft.loadUserLoading = true;
             draft.loadUserError = null;
@@ -90,7 +119,7 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
             break;
         case LOAD_USER_SUCCESS:
             draft.loadUserLoading = false;
-            draft.me = action.data;
+            draft.userInfo = action.data;
             draft.loadUserDone = true;
             break;
         case LOAD_USER_FAILURE:
@@ -140,6 +169,21 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
         case SIGN_UP_FAILURE:
             draft.signUpLoading = false;
             draft.signUpError = action.error;
+            break;
+        // 이메일 변경
+        case CHANGE_EMAIL_REQUEST:
+            draft.changeEmailLoading = true;
+            draft.changeEmailError = null;
+            draft.changeEmailDone = false;
+            break;
+        case CHANGE_EMAIL_SUCCESS:
+            draft.changeEmailLoading = false;
+            draft.me.email = action.data.email;
+            draft.changeEmailDone = true;
+            break;
+        case CHANGE_EMAIL_FAILURE:
+            draft.changeEmailLoading = false;
+            draft.changeEmailError = action.error;
             break;
         // 닉네임 변경
         case CHANGE_NICKNAME_REQUEST:

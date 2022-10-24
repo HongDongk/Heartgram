@@ -1,4 +1,4 @@
-import React, { useCallback , useState,  useEffect} from 'react';
+import React, { useCallback , useEffect} from 'react';
 import { Button, Modal, Form, Input } from 'antd';
 import { useSelector, useDispatch } from 'react-redux';
 import styled from 'styled-components';
@@ -6,15 +6,14 @@ import styled from 'styled-components';
 import modal from '../hooks/modal';
 import UnFollow from './UnFollow';
 import useInput from '../hooks/useInput';
-import { CHANGE_NICKNAME_REQUEST, LOAD_FOLLOWERS_REQUEST, LOAD_FOLLOWINGS_REQUEST } from '../reducers/user';
+import { CHANGE_EMAIL_REQUEST, CHANGE_NICKNAME_REQUEST, LOAD_FOLLOWERS_REQUEST, LOAD_FOLLOWINGS_REQUEST } from '../reducers/user';
 
 const UserProfile = () => {
 
     const dispatch = useDispatch();
-    const [email, onChangeEmail] = useInput('');
-    const [password, onChangePassword] = useInput('');
+    const [email, onChangeEmail, setEmail] = useInput('');
     const [nickname, onChangeNickname, setNickname] = useInput('');
-    const { changeNicknameLoading, changeNicknameDone, me } = useSelector((state) => state.user);
+    const { changeEmailDone, changeNicknameDone, me } = useSelector((state) => state.user);
 
     useEffect(() => {
         dispatch({
@@ -27,17 +26,25 @@ const UserProfile = () => {
 
     const onSubmit = useCallback(() => {
         dispatch({
+            type: CHANGE_EMAIL_REQUEST,
+            data: email,
+        });
+        dispatch({
             type: CHANGE_NICKNAME_REQUEST,
             data: nickname,
         });
         handleCancel();
-    }, [nickname]);
+    }, [email, nickname]);
     
     useEffect(() => {
+        if (changeEmailDone) {
+            setEmail('');
+        }
         if (changeNicknameDone) {
             setNickname('');
         }
-    }, [changeNicknameDone]);
+
+    }, [changeEmailDone, changeNicknameDone]);
 
     const [open, showModal, handleOk, handleCancel] = modal(false);
     const [open2, showModal2, handleOk2, handleCancel2] = modal(false);
@@ -57,7 +64,7 @@ const UserProfile = () => {
                     footer={[<Button key="back" onClick={handleCancel}>
                                 뒤로가기
                              </Button>,
-                             <Button key="submit" type="primary" loading={changeNicknameLoading} onClick={onSubmit} htmlType="submit">
+                             <Button key="submit" type="primary" onClick={onSubmit} htmlType="submit">
                                 수정하기
                              </Button>
                            ]}
@@ -66,25 +73,16 @@ const UserProfile = () => {
                         <Form.Item label="이메일 수정" name="changeemail">
                             <SInput 
                                 name="user-email" 
-                                placeholder= {me.email} 
+                                defaultValue={me.email} 
                                 type="email" 
                                 value={email} 
                                 onChange={onChangeEmail} 
                             />
                         </Form.Item>
-                        <Form.Item label="비밀번호 수정" name="changepassword">
-                            <SInput 
-                                name="user-password" 
-                                placeholder={me.password} 
-                                type="password" 
-                                value={password} 
-                                onChange={onChangePassword} 
-                            />
-                        </Form.Item>
                         <Form.Item label="닉네임 수정" name="changenickname">
                             <SInput 
                                 name="user-nickname" 
-                                placeholder={me.nickname} 
+                                defaultValue={me.nickname}
                                 type="string" 
                                 value={nickname} 
                                 onChange={onChangeNickname} 

@@ -6,7 +6,7 @@ import styled from 'styled-components';
 
 import Loginform from "../components/Loginform";
 import Image from "next/image";
-import { LOAD_USER_REQUEST } from '../reducers/user';
+import { LOAD_MY_INFO_REQUEST } from '../reducers/user';
 import Heart from "../img/Heart.png";
 import AppLayout from '../components/AppLayout';
 
@@ -18,7 +18,7 @@ const Home = () => {
 
     useEffect(() => {
         dispatch({
-          type: LOAD_USER_REQUEST,
+            type: LOAD_MY_INFO_REQUEST,
         });
     }, []);
 

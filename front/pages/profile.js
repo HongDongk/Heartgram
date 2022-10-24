@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { END } from 'redux-saga';
 import axios from 'axios';
 
-import { LOAD_USER_REQUEST } from '../reducers/user';
+import { LOAD_MY_INFO_REQUEST } from '../reducers/user';
 import { LOAD_POSTS_REQUEST } from '../reducers/post';
 import wrapper from '../store/configureStore';
 
@@ -28,7 +28,7 @@ export const getServerSideProps = wrapper.getServerSideProps((store) => async ({
       axios.defaults.headers.Cookie = cookie;
     }
     store.dispatch({
-      type: LOAD_USER_REQUEST,
+      type: LOAD_MY_INFO_REQUEST,
     });
     store.dispatch({
       type: LOAD_POSTS_REQUEST,

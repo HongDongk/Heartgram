@@ -70,12 +70,12 @@ const PostForm = () => {
         </div>
         <Preview>
           {imagePaths.map((v,i) => (
-            <div key={v}>
-              <img src={`http://localhost:3065/${v}`} style={{ width: '200px' }} alt={v} />
-              <div>
+            <Items key={v}>
+              <img src={`http://localhost:3065/${v}`} style={{ width: '200px'}} alt={v} />
+              <Cancel>
                 <Button onClick={onRemoveImage(i)}>취소</Button>
-              </div>
-            </div>
+              </Cancel>
+            </Items>
           ))}
         </Preview>
       </SForm>
@@ -105,8 +105,21 @@ const ButtonBox = styled.div`
 `;
 
 const Preview = styled.div`
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
     width:100vw;
+    padding:15px 15%;
     margin-top:10px;
-    background-color:white;
-    z-index:10;
 `;
+
+const Items = styled.div`
+    margin-left: 15px;
+    
+`;
+
+
+const Cancel = styled.div`
+    margin-top:10px;
+`;
+

@@ -9,7 +9,7 @@ import TopMenu from "../components/TopMenu"
 import PostForm from "../components/Postform";
 import PostCard from "../components/PostCard";
 import { LOAD_POSTS_REQUEST } from '../reducers/post';
-import { LOAD_USER_REQUEST } from '../reducers/user';
+import { LOAD_MY_INFO_REQUEST } from '../reducers/user';
 import wrapper from '../store/configureStore';
 
 const Postupdate = () => {
@@ -56,7 +56,7 @@ export const getServerSideProps = wrapper.getServerSideProps((store) => async ({
       axios.defaults.headers.Cookie = cookie;
     }
     store.dispatch({
-      type: LOAD_USER_REQUEST,
+      type: LOAD_MY_INFO_REQUEST,
     });
     store.dispatch({
       type: LOAD_POSTS_REQUEST,

@@ -22,7 +22,6 @@ const AppLayout = ({ children }) => {
             <Footer>
                 <div><a href="https://blog.naver.com/hongdongk" target="_blank" rel="noreferrer noopener">Blog</a></div>
                 <div><a href="https://github.com/HongDongk" target="_blank" rel="noreferrer noopener">GitHub</a></div>
-                <div><Link href="/aboutme"><a>About me</a></Link></div>
                 <Info>
                     <div>Made By Dongkeun</div>
                     <div>© 2022 Update from DK</div>
@@ -55,7 +54,7 @@ const Footer = styled.div`
     flex-wrap: wrap;
     display:flex;
     justify-content:center;
-    justify-content:space-between;
+    justify-content:space-around;
 `;
 
 const Info = styled.div`

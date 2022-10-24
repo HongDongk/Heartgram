@@ -8,7 +8,7 @@ const { isLoggedIn, isNotLoggedIn } = require('./middlewares');
 
 const router = express.Router();
 
-// 유저정보 불러오기
+// 내 정보 불러오기
 router.get('/', async (req, res, next) => { // GET /user
   try {
     if (req.user) {
@@ -38,6 +38,42 @@ router.get('/', async (req, res, next) => { // GET /user
     console.error(error);
  next(error);
 }
+});
+
+// 선택한 사용자 정보 불러오기
+router.get('/:id', async (req, res, next) => { // GET /user/3
+    try {
+        const fullUserWithoutPassword = await User.findOne({
+          where: { id: req.params.id },
+          attributes: {
+            exclude: ['password']
+          },
+          include: [{
+            model: Post,
+            attributes: ['id'],
+          }, {
+            model: User,
+            as: 'Followings',
+            attributes: ['id'],
+          }, {
+            model: User,
+            as: 'Followers',
+            attributes: ['id'],
+          }]
+        })
+        if (fullUserWithoutPassword) {
+            const data = fullUserWithoutPassword.toJSON();
+            data.Posts = data.Posts.length;
+            data.Followings = data.Followings.length;
+            data.Followers = data.Followers.length;
+            res.status(200).json(data);
+        } else {
+            res.status(404).json('존재하지 않는 사용자입니다.');
+        }
+      } catch (error) {
+          console.error(error);
+        next(error);
+    }
 });
 
 // 로그인
@@ -106,6 +142,20 @@ router.post('/', isNotLoggedIn, async (req, res, next) => { // POST /user/
         console.log(error);
         next(error); // status 500
     }   
+});
+//이메일 수정
+router.patch('/email', isLoggedIn, async (req, res, next) => {
+  try {
+    await User.update({
+      email: req.body.email,
+    }, {
+      where: { id: req.user.id },
+    });
+    res.status(200).json({ email: req.body.email });
+  } catch (error) {
+    console.error(error);
+    next(error);
+  }
 });
 //닉네임 수정
 router.patch('/nickname', isLoggedIn, async (req, res, next) => {
