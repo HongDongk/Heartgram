@@ -2,8 +2,12 @@ import produce from '../util/produce';
 
 export const initialState = {
     mainPosts: [],
+    singlePost: null,
     imagePaths: [],
     hasMorePosts: true,
+    loadPostLoading: false, // 단일 게시글 로딩
+    loadPostDone: false,
+    loadPostError: null,
     loadPostsLoading: false, // 게시글 로딩
     loadPostsDone: false,
     loadPostsError: null,
@@ -29,6 +33,10 @@ export const initialState = {
     retweetDone: false,
     retweetError: null,
 };
+
+export const LOAD_POST_REQUEST = 'LOAD_POST_REQUEST';
+export const LOAD_POST_SUCCESS = 'LOAD_POST_SUCCESS';
+export const LOAD_POST_FAILURE = 'LOAD_POST_FAILURE';
 
 export const LOAD_POSTS_REQUEST = 'LOAD_POSTS_REQUEST';
 export const LOAD_POSTS_SUCCESS = 'LOAD_POSTS_SUCCESS';
@@ -67,6 +75,21 @@ export const REMOVE_IMAGE = 'REMOVE_IMAGE';
 
 const reducer = (state = initialState, action) => produce(state, (draft) => {
     switch (action.type) {
+        // 단일 게시글 로딩
+        case LOAD_POST_REQUEST:
+            draft.loadPostLoading = true;
+            draft.loadPostDone = false;
+            draft.loadPostError = null;
+            break;
+        case LOAD_POST_SUCCESS:
+            draft.loadPostLoading = false;
+            draft.loadPostDone = true;
+            draft.singlePost = action.data;
+            break;
+        case LOAD_POST_FAILURE:
+            draft.loadPostLoading = false;
+            draft.loadPostError = action.error;
+            break;
         // 게시글 로딩
         case LOAD_POSTS_REQUEST:
             draft.loadPostsLoading = true;

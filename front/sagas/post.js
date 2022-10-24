@@ -2,6 +2,7 @@ import axios from 'axios';
 import { all, delay, fork, put, takeLatest, throttle, call } from 'redux-saga/effects';
 
 import {
+    LOAD_POST_FAILURE, LOAD_POST_REQUEST, LOAD_POST_SUCCESS,
     LOAD_POSTS_FAILURE, LOAD_POSTS_REQUEST,LOAD_POSTS_SUCCESS,
     ADD_POST_FAILURE, ADD_POST_REQUEST, ADD_POST_SUCCESS,
     REMOVE_POST_FAILURE, REMOVE_POST_REQUEST, REMOVE_POST_SUCCESS,
@@ -14,6 +15,27 @@ import {
 
 import { ADD_POST_TO_ME, REMOVE_POST_OF_ME } from '../reducers/user';
 
+// 단일 게시글 로드
+function loadPostAPI(data) {
+    return axios.get(`/post/${data}`);
+}
+
+function* loadPost(action) {
+  try {
+    const result = yield call(loadPostAPI, action.data);
+    yield put({
+        type: LOAD_POST_SUCCESS,
+        data: result.data,
+    });
+  } catch (err) {
+    console.error(err);
+    yield put({
+        type: LOAD_POST_FAILURE,
+        data: err.response.data,
+    });
+  }
+}
+
 // 게시물 로드
 function loadPostsAPI(lastId) {
     return axios.get(`/posts?lastId=${lastId || 0}`);
@@ -23,14 +45,14 @@ function* loadPosts(action) {
     try {
       const result = yield call(loadPostsAPI, action.lastId);
       yield put({
-        type: LOAD_POSTS_SUCCESS,
-        data: result.data,
+          type: LOAD_POSTS_SUCCESS,
+          data: result.data,
       });
     } catch (err) {
       console.error(err);
       yield put({
-        type: LOAD_POSTS_FAILURE,
-        data: err.response.data,
+          type: LOAD_POSTS_FAILURE,
+          data: err.response.data,
       });
     }
 }
@@ -191,6 +213,10 @@ function* retweet(action) {
     }
 }
 
+function* watchLoadPost() {
+    yield takeLatest(LOAD_POST_REQUEST, loadPost);
+}
+
 function* watchLoadPosts() {
     yield throttle(5000, LOAD_POSTS_REQUEST, loadPosts);
 }
@@ -226,8 +252,9 @@ function* watchRetweet() {
 
 export default function* postSaga() {
     yield all([
-      fork(watchAddPost),
+      fork(watchLoadPost),
       fork(watchLoadPosts),
+      fork(watchAddPost),
       fork(watchRemovePost),
       fork(watchUploadImages),
       fork(watchLikePost),
