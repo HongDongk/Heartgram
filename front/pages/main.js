@@ -6,7 +6,7 @@ import { END } from 'redux-saga';
 import axios from 'axios';
 
 import PostCard from '../components/PostCard';
-import TopMenu from "../components/TopMenu"
+import TopMenu from "../components/TopMenu";
 import { LOAD_POSTS_REQUEST } from '../reducers/post';
 import { LOAD_MY_INFO_REQUEST } from '../reducers/user';
 import wrapper from '../store/configureStore';

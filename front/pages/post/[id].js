@@ -3,12 +3,13 @@ import { useSelector } from 'react-redux';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { END } from 'redux-saga';
-
+import styled from 'styled-components';
 import axios from 'axios';
+
+import TopMenu from '../../components/TopMenu';
 import { LOAD_POST_REQUEST } from '../../reducers/post';
 import wrapper from '../../store/configureStore';
 import PostCard from '../../components/PostCard';
-import AppLayout from '../../components/AppLayout';
 import { LOAD_MY_INFO_REQUEST } from '../../reducers/user';
 
 const Post = () => {
@@ -16,10 +17,6 @@ const Post = () => {
     const { singlePost } = useSelector((state) => state.post);
     const router = useRouter();
     const { id } = router.query;
-
-    // if (router.isFallback) {
-    //   return <div>Loading...</div>
-    // }
 
     return (
         <div>
@@ -33,22 +30,29 @@ const Post = () => {
                 <meta property="og:image" content={singlePost.Images[0] ? singlePost.Images[0].src : 'https://Heargram.com/favicon.ico'} />
                 <meta property="og:url" content={`https://Heargram.com/post/${id}`} />
             </Head>
-            <PostCard post={singlePost} />
+            <Content>
+                <TopMenu/>
+                <MainContent>
+                    <PostCard post={singlePost} />
+                </MainContent>
+            </Content>              
         </div>     
     );
 };
 
-// export async function getStaticPaths() {
-//   return {
-//     paths: [
-//       { params: { id: '1' } },
-//       { params: { id: '2' } },
-//       { params: { id: '3' } },
-//       { params: { id: '4' } },
-//     ],
-//     fallback: true,
-//   };
-// }
+const Content = styled.div`
+    display:flex;
+    justify-content:center;
+    flex-wrap: wrap;
+    background-color: #E6E6FA;
+    overflow-x: hidden;
+`;
+
+const MainContent = styled.div`
+    width:1050px;
+    padding: 50px 200px;
+    min-height:calc(100vh - 70px);
+`;
 
 export const getServerSideProps = wrapper.getServerSideProps((store) => async ({ req, params }) => {
     const cookie = req ? req.headers.cookie : '';

@@ -37,23 +37,24 @@ function* loadMyInfo() {
 }
 //유저 불러오기
 function loadUserAPI(data) {
-  return axios.get(`/user/${data}`);
+    return axios.get(`/user/${data}`);
 }
 
 function* loadUser(action) {
-  try {
-    const result = yield call(loadUserAPI, action.data);
-    yield put({
-        type: LOAD_USER_SUCCESS,
-        data: result.data,
-    });
-  } catch (err) {
-    console.error(err);
-    yield put({
-        type: LOAD_USER_FAILURE,
-        error: err.response.data,
-    });
-  }
+    try {
+      const result = yield call(loadUserAPI, action.data);
+      console.log('loadUserData', result.data);
+      yield put({
+          type: LOAD_USER_SUCCESS,
+          data: result.data,
+      });
+    } catch (err) {
+      console.error(err);
+      yield put({
+          type: LOAD_USER_FAILURE,
+          error: err.response.data,
+      });
+    }
 }
 // 로그인
 function logInAPI(data) {

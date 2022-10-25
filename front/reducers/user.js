@@ -39,7 +39,7 @@ export const initialState = {
     unfollowDone: false,
     unfollowError: null,
     me: null,
-    
+    userInfo: null,
 };
 
 export const LOAD_MY_INFO_REQUEST = 'LOAD_MY_INFO_REQUEST';

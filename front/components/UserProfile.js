@@ -156,31 +156,27 @@ const Sbutton = styled.div`
     &:hover{  
         cursor: pointer;
     }
-`
+`;
 const Count = styled.span`
     font-weight:bold;
     &:hover{  
         cursor: pointer;
     }
 `;
-
 const SModal = styled(Modal)`
     display:flex;
     justify-content:center;
 `;
-
 const Items = styled.div`
     display:flex;
     justify-content:space-between;
     align-items:center;
     margin-bottom:10px;
 `;
-
 const SInput=styled(Input)`
     width:350px;
     border-radius:6px;  
 `;
-
 const FormWrapper=styled(Form)`
     width:350px;
 `;

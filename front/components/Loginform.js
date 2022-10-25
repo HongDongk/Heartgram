@@ -13,9 +13,15 @@ const Loginform = () => {
 
     const dispatch = useDispatch();
     
-    const { logInLoading, logInError, logInDone } = useSelector((state) => state.user);
+    const { logInLoading, logInError, logInDone, me } = useSelector((state) => state.user);
     const [email, onChangeEmail] = useInput('');
     const [password, onChangePassword] = useInput('');
+
+    useEffect(() => {
+        if (me && me.id) {
+            Router.replace('/main'); 
+        }
+    }, [me && me.id]);
 
     useEffect(() => {
         if (logInError) {

@@ -34,6 +34,14 @@ export const initialState = {
     retweetError: null,
 };
 
+export const LOAD_USER_POSTS_REQUEST = 'LOAD_USER_POSTS_REQUEST';     // 유저 포스트 로딩
+export const LOAD_USER_POSTS_SUCCESS = 'LOAD_USER_POSTS_SUCCESS';
+export const LOAD_USER_POSTS_FAILURE = 'LOAD_USER_POSTS_FAILURE';
+
+export const LOAD_HASHTAG_POSTS_REQUEST = 'LOAD_HASHTAG_POSTS_REQUEST';  // 해쉬태그 포스트 로딩
+export const LOAD_HASHTAG_POSTS_SUCCESS = 'LOAD_HASHTAG_POSTS_SUCCESS';
+export const LOAD_HASHTAG_POSTS_FAILURE = 'LOAD_HASHTAG_POSTS_FAILURE';
+
 export const LOAD_POST_REQUEST = 'LOAD_POST_REQUEST';
 export const LOAD_POST_SUCCESS = 'LOAD_POST_SUCCESS';
 export const LOAD_POST_FAILURE = 'LOAD_POST_FAILURE';
@@ -90,18 +98,21 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
             draft.loadPostLoading = false;
             draft.loadPostError = action.error;
             break;
-        // 게시글 로딩
+        // 유저 게시글, 해쉬태그 게시글, 게시글 로딩
+        case LOAD_USER_POSTS_REQUEST:
         case LOAD_POSTS_REQUEST:
             draft.loadPostsLoading = true;
             draft.loadPostsDone = false;
             draft.loadPostsError = null;
             break;
+        case LOAD_USER_POSTS_SUCCESS:
         case LOAD_POSTS_SUCCESS:
             draft.loadPostsLoading = false;
             draft.loadPostsDone = true;
             draft.mainPosts = draft.mainPosts.concat(action.data);  //맨앞에 추가해서 새로운 배열 반환
             draft.hasMorePosts = action.data.length === 10;
             break;
+        case LOAD_USER_POSTS_FAILURE:
         case LOAD_POSTS_FAILURE:
             draft.loadPostsLoading = false;
             draft.loadPostsError = action.error;
