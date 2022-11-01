@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Modal } from 'antd';
 import { END } from 'redux-saga';
 import styled from 'styled-components';
 import Head from 'next/head';
@@ -8,8 +7,8 @@ import { useRouter } from 'next/router';
 import { useInView } from 'react-intersection-observer';
 import axios from 'axios';
 
-import modal from '../../hooks/modal';
-import { LOAD_POSTS_REQUEST, LOAD_USER_POSTS_REQUEST } from '../../reducers/post';
+import TopMenu from "../../components/TopMenu";
+import { LOAD_USER_POSTS_REQUEST } from '../../reducers/post';
 import { LOAD_MY_INFO_REQUEST, LOAD_USER_REQUEST } from '../../reducers/user';
 import PostCard from '../../components/PostCard';
 import wrapper from '../../store/configureStore';
@@ -23,15 +22,12 @@ const User = () => {
     const { userInfo, me } = useSelector((state) => state.user);
     const [ref, inView] = useInView();
 
-    const [open2, showModal2, handleOk2, handleCancel2] = modal(false);
-    const [open3, showModal3, handleOk3, handleCancel3] = modal(false);
-
     useEffect(
         () => {
         if (inView && hasMorePosts && !loadPostsLoading) {
             const lastId = mainPosts[mainPosts.length - 1]?.id;
             dispatch({
-                type: LOAD_POSTS_REQUEST,
+                type: LOAD_USER_POSTS_REQUEST,
                 lastId,
                 data: id,
             });
@@ -45,7 +41,7 @@ const User = () => {
             {userInfo && (
                 <Head>
                     <title>
-                        {userInfo.nickname} 님의 글
+                        {userInfo.nickname} 님의 프로필
                     </title>
                     <meta name="description" content={`${userInfo.nickname}님의 게시글`} />
                     <meta property="og:title" content={`${userInfo.nickname}님의 게시글`} />
@@ -54,15 +50,30 @@ const User = () => {
                     <meta property="og:url" content={`https://Heargram.com/user/${id}`} />
                 </Head>
             )}
-            {userInfo && (userInfo.id !== me?.id) ? (
-                <div>
-                    <Avatar>{userInfo.nickname[0]}</Avatar>
-                    <Email>{userInfo.email}</Email>
-                    
-                </div>             
-            ) : null}
-            {mainPosts.map((c) => (<PostCard key={c.id} post={c} />))}
-            <div ref={hasMorePosts && !loadPostsLoading ? ref : undefined} style={{ height: 10 }} />
+            {userInfo ? (
+                <Content>
+                    <TopMenu/>
+                    <UserInfo>
+                        <Profile>
+                            <Avatar>{userInfo.nickname[0]}</Avatar>
+                            <Email>{userInfo.email}</Email>
+                            <Info>
+                                <Sbutton><Count>{userInfo.Posts}</Count> 게시글</Sbutton>
+                                <Sbutton><Count>{userInfo.Followings}</Count> 팔로잉</Sbutton>
+                                <Sbutton><Count>{userInfo.Followers}</Count> 팔로워</Sbutton>                     
+                            </Info>      
+                        </Profile>
+                    </UserInfo>
+                    <PostBox>
+                        <Title>❤{userInfo.nickname}님의 게시글❤</Title>             
+                        <MainContent>
+                            {mainPosts.map((c) => (<PostCard key={c.id} post={c} />))}
+                            <div ref={hasMorePosts && !loadPostsLoading ? ref : undefined} style={{ height: 10 }} />
+                        </MainContent>
+                    </PostBox>       
+                </Content>
+               
+            ): null } 
         </div>
     );
 };
@@ -90,6 +101,43 @@ export const getServerSideProps = wrapper.getServerSideProps((store) => async ({
 
 export default User;
 
+const Content = styled.div`
+    display:flex;
+    justify-content:center;
+    flex-wrap: wrap;
+    background-color: #E6E6FA;
+    overflow-x: hidden;
+`;
+const UserInfo = styled.div`
+    display:flex;
+    justify-content:center;
+    margin-top:40px;
+    width:100%;
+`;
+const Profile = styled.div`
+    padding-top:50px;
+    display:flex;
+    justify-content:center;
+    flex-wrap:wrap;
+    width:550px;
+    height:350px;
+    background-color: whitesmoke;
+`;
+const PostBox = styled.div`
+    width:100%;
+    background-color:#F8F8FF;
+    display:flex;
+    justify-content:center;
+    flex-wrap: wrap;
+`;
+const Title = styled.div`
+    height:50px;
+    font-size:17px;
+    font-weight:bold;
+    width:100%;
+    text-align:center;
+    line-height:50px;
+`;
 const Avatar = styled.div`
     display:flex;
     justify-content:center;
@@ -129,4 +177,12 @@ const Count = styled.span`
     &:hover{  
         cursor: pointer;
     }
+`;
+
+const MainContent = styled.div`
+    width:1050px;
+    margin-top:10px;
+    padding-bottom:50px;
+    padding: 0 200px;
+    min-height:calc(100vh - 70px);
 `;

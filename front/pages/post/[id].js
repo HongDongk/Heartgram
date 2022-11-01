@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
@@ -14,13 +14,20 @@ import { LOAD_MY_INFO_REQUEST } from '../../reducers/user';
 
 const Post = () => {
     
-    const { singlePost } = useSelector((state) => state.post);
+    const { singlePost, loadPostError } = useSelector((state) => state.post);
     const router = useRouter();
     const { id } = router.query;
 
+    useEffect(() => {
+        if (loadPostError) {
+            alert(loadPostError);
+        }
+    }, [loadPostError]);
+
     return (
         <div>
-            <Head>
+            {singlePost && (
+                <Head>
                 <title>
                     {singlePost.User.nickname} 님의 글
                 </title>
@@ -30,12 +37,15 @@ const Post = () => {
                 <meta property="og:image" content={singlePost.Images[0] ? singlePost.Images[0].src : 'https://Heargram.com/favicon.ico'} />
                 <meta property="og:url" content={`https://Heargram.com/post/${id}`} />
             </Head>
-            <Content>
-                <TopMenu/>
-                <MainContent>
-                    <PostCard post={singlePost} />
-                </MainContent>
-            </Content>              
+            )}
+            {singlePost ? (
+                <Content>
+                    <TopMenu/>
+                    <MainContent>
+                        <PostCard post={singlePost} />
+                    </MainContent>
+                </Content>                    
+            ): null}
         </div>     
     );
 };
