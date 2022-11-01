@@ -19,7 +19,7 @@ const User = () => {
     const router = useRouter();
     const { id } = router.query;
     const { mainPosts, hasMorePosts, loadPostsLoading } = useSelector((state) => state.post);
-    const { userInfo, me } = useSelector((state) => state.user);
+    const { userInfo } = useSelector((state) => state.user);
     const [ref, inView] = useInView();
 
     useEffect(
@@ -66,10 +66,12 @@ const User = () => {
                     </UserInfo>
                     <PostBox>
                         <Title>❤{userInfo.nickname}님의 게시글❤</Title>             
-                        <MainContent>
-                            {mainPosts.map((c) => (<PostCard key={c.id} post={c} />))}
-                            <div ref={hasMorePosts && !loadPostsLoading ? ref : undefined} style={{ height: 10 }} />
-                        </MainContent>
+                        {mainPosts.length !== 0 ? (
+                                <MainContent>
+                                    {mainPosts.map((c) => (<PostCard key={c.id} post={c} />))}
+                                    <div ref={hasMorePosts && !loadPostsLoading ? ref : undefined} style={{ height: 10 }} />
+                                </MainContent>          
+                            ) : <NoPost>아직 게시글이 없네요!!😥</NoPost> }
                     </PostBox>       
                 </Content>
                
@@ -131,12 +133,12 @@ const PostBox = styled.div`
     flex-wrap: wrap;
 `;
 const Title = styled.div`
-    height:50px;
+    height:70px;
     font-size:17px;
     font-weight:bold;
     width:100%;
     text-align:center;
-    line-height:50px;
+    line-height:70px;
 `;
 const Avatar = styled.div`
     display:flex;
@@ -177,6 +179,12 @@ const Count = styled.span`
     &:hover{  
         cursor: pointer;
     }
+`;
+
+const NoPost = styled.div`
+    font-size:30px;
+    height:calc(100vh - 530px);
+    line-height: calc(100vh - 530px);
 `;
 
 const MainContent = styled.div`

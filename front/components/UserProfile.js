@@ -109,7 +109,6 @@ const UserProfile = () => {
 export default UserProfile;
 
 const Profile = styled.div`
-    margin-top:30px;
     padding-top:50px;
     display:flex;
     justify-content:center;
@@ -117,6 +116,7 @@ const Profile = styled.div`
     width:520px;
     height:350px;
     background-color:whitesmoke;
+    border-radius:20px;
 `;
 const Avatar = styled.div`
     display:flex;
