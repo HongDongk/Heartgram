@@ -10,7 +10,7 @@ const PostCardContent = ({ postData }) => (
           if (v.match(/(#[^\s]+)/)) {
               return (    
                     <Link href={{ pathname: '/hashtag', query: { tag: v.slice(1) } }} as={`/hashtag/${v.slice(1)}`} key={v}>
-                        <a>{v}</a>
+                        <SLink>{v}</SLink>
                     </Link>    
               );
           }
@@ -28,3 +28,8 @@ export default PostCardContent;
 const CardContent = styled.div`
     color: black;
 `;    
+
+const SLink = styled.a`
+    font-size:20px;
+    color: #1E90FF;
+`;

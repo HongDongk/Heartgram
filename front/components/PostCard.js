@@ -72,7 +72,9 @@ const PostCard = ({ post }) => {
 
     return (
         <CardWrapper>
-          <User><a><Avatar>{post.User.nickname[0]}</Avatar>&nbsp;&nbsp;&nbsp;{post.User.nickname}</a>{id && <FollowButton post={post} />}</User>
+          <User>
+            <Link href={`/user/${post.User.id}`} prefetch={false}><a><Avatar>{post.User.nickname[0]}</Avatar>&nbsp;&nbsp;&nbsp;{post.User.nickname}</a></Link>{id && <FollowButton post={post} />}
+          </User>
           <SCard 
             cover={ <PostImages images={post.Images} /> }
             actions={[

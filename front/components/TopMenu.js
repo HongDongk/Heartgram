@@ -1,10 +1,13 @@
 import React, { useCallback, useState, useEffect} from 'react';
 import Link from 'next/link';
+import Router, { useRouter } from 'next/router';
 import { useSelector, useDispatch } from 'react-redux';
 import styled, { createGlobalStyle }  from 'styled-components';
 import { Input } from 'antd';
 import { HomeFilled , UserOutlined, HeartOutlined, HeartTwoTone, PlusSquareOutlined } from '@ant-design/icons';
+
 import { LOG_OUT_REQUEST } from '../reducers/user';
+import useInput from '../hooks/useInput';
 
 const Global = createGlobalStyle`
    a {
@@ -21,9 +24,14 @@ const Global = createGlobalStyle`
 
 const TopMenu = () => {
 
-    const { me, logOutError, logOutDone } = useSelector((state) => state.user);
+    const { me, logOutError } = useSelector((state) => state.user);
+    const [searchInput, onChangeSearchInput] = useInput('');
     const dispatch = useDispatch();
     const [liked, setLiked] = useState(false);
+
+    const onSearch = useCallback(() => {
+        Router.push(`/hashtag/${searchInput}`);
+    }, [searchInput]);
 
     const onLogout = useCallback(() => {
         dispatch({
@@ -49,7 +57,7 @@ const TopMenu = () => {
             <Top mode="horizontal">
                 <TopItem><Logo>HeartGram</Logo></TopItem>
                 <TopItem>
-                    <SearchBox placeholder="Find new friend" size="large"/>
+                    <SearchBox value={searchInput} onChange={onChangeSearchInput} onSearch={onSearch} placeholder="해쉬태그를 검색해보세요!" size="large"/>
                 </TopItem>
                 {me &&
                     <Util>
