@@ -73,8 +73,7 @@ const User = () => {
                                 </MainContent>          
                             ) : <NoPost>아직 게시글이 없네요!!😥</NoPost> }
                     </PostBox>       
-                </Content>
-               
+                </Content>          
             ): null } 
         </div>
     );

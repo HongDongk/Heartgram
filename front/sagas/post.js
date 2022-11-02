@@ -4,6 +4,7 @@ import { all, delay, fork, put, takeLatest, throttle, call } from 'redux-saga/ef
 import {
     LOAD_POST_FAILURE, LOAD_POST_REQUEST, LOAD_POST_SUCCESS,
     LOAD_USER_POSTS_FAILURE, LOAD_USER_POSTS_REQUEST, LOAD_USER_POSTS_SUCCESS,
+    LOAD_HASHTAG_POSTS_FAILURE, LOAD_HASHTAG_POSTS_REQUEST, LOAD_HASHTAG_POSTS_SUCCESS,
     LOAD_POSTS_FAILURE, LOAD_POSTS_REQUEST,LOAD_POSTS_SUCCESS,
     ADD_POST_FAILURE, ADD_POST_REQUEST, ADD_POST_SUCCESS,
     REMOVE_POST_FAILURE, REMOVE_POST_REQUEST, REMOVE_POST_SUCCESS,
@@ -59,7 +60,27 @@ function* loadUserPosts(action) {
   }
 }
 
+// 해쉬태그 게시글 로드
+function loadHashtagPostsAPI(data, lastId) {
+  return axios.get(`/hashtag/${encodeURIComponent(data)}?lastId=${lastId || 0}`);
+}
 
+function* loadHashtagPosts(action) {
+  try {
+    console.log('loadHashtag console');
+    const result = yield call(loadHashtagPostsAPI, action.data, action.lastId);
+    yield put({
+      type: LOAD_HASHTAG_POSTS_SUCCESS,
+      data: result.data,
+    });
+  } catch (err) {
+    console.error(err);
+    yield put({
+      type: LOAD_HASHTAG_POSTS_FAILURE,
+      error: err.response.data,
+    });
+  }
+}
 
 // 게시물 로드
 function loadPostsAPI(lastId) {
@@ -246,6 +267,10 @@ function* watchLoadUserPosts() {
     yield throttle(5000, LOAD_USER_POSTS_REQUEST, loadUserPosts);
 }
 
+function* watchLoadHashtagPosts() {
+    yield throttle(5000, LOAD_HASHTAG_POSTS_REQUEST, loadHashtagPosts);
+}
+
 function* watchLoadPosts() {
     yield throttle(5000, LOAD_POSTS_REQUEST, loadPosts);
 }
@@ -283,6 +308,7 @@ export default function* postSaga() {
     yield all([
       fork(watchLoadPost),
       fork(watchLoadUserPosts),
+      fork(watchLoadHashtagPosts),
       fork(watchLoadPosts),
       fork(watchAddPost),
       fork(watchRemovePost),

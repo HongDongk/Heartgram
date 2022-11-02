@@ -100,12 +100,14 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
             break;
         // 유저 게시글, 해쉬태그 게시글, 게시글 로딩
         case LOAD_USER_POSTS_REQUEST:
+        case LOAD_HASHTAG_POSTS_REQUEST:
         case LOAD_POSTS_REQUEST:
             draft.loadPostsLoading = true;
             draft.loadPostsDone = false;
             draft.loadPostsError = null;
             break;
         case LOAD_USER_POSTS_SUCCESS:
+        case LOAD_HASHTAG_POSTS_SUCCESS:
         case LOAD_POSTS_SUCCESS:
             draft.loadPostsLoading = false;
             draft.loadPostsDone = true;
@@ -113,6 +115,7 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
             draft.hasMorePosts = action.data.length === 10;
             break;
         case LOAD_USER_POSTS_FAILURE:
+        case LOAD_HASHTAG_POSTS_FAILURE:
         case LOAD_POSTS_FAILURE:
             draft.loadPostsLoading = false;
             draft.loadPostsError = action.error;
