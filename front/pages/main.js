@@ -43,8 +43,7 @@ const Main = () => {
                 <MainContent>
                     {mainPosts.map((c) => (<PostCard key={c.id} post={c} />))}
                     <div ref={hasMorePosts && !loadPostsLoading ? ref : undefined} style={{ height: 10 }} />
-                </MainContent>
-                
+                </MainContent>   
             </Content>   
     );
 };

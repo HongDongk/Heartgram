@@ -2,11 +2,12 @@ import React, { useCallback , useEffect} from 'react';
 import { Button, Modal, Form, Input } from 'antd';
 import { useSelector, useDispatch } from 'react-redux';
 import styled from 'styled-components';
+import Link from 'next/link';
 
 import modal from '../hooks/modal';
 import UnFollow from './UnFollow';
 import useInput from '../hooks/useInput';
-import { CHANGE_EMAIL_REQUEST, CHANGE_NICKNAME_REQUEST, LOAD_FOLLOWERS_REQUEST, LOAD_FOLLOWINGS_REQUEST } from '../reducers/user';
+import { CHANGE_EMAIL_REQUEST, CHANGE_NICKNAME_REQUEST } from '../reducers/user';
 
 const UserProfile = () => {
 
@@ -14,15 +15,6 @@ const UserProfile = () => {
     const [email, onChangeEmail, setEmail] = useInput('');
     const [nickname, onChangeNickname, setNickname] = useInput('');
     const { changeEmailDone, changeNicknameDone, me } = useSelector((state) => state.user);
-
-    useEffect(() => {
-        dispatch({
-            type: LOAD_FOLLOWERS_REQUEST,
-        });
-        dispatch({
-            type: LOAD_FOLLOWINGS_REQUEST,
-        });
-    }, []);
 
     const onSubmit = useCallback(() => {
         dispatch({
@@ -92,7 +84,7 @@ const UserProfile = () => {
                 </SModal>        
             </Top>
             <Info>
-                <Sbutton><Count>{me.Posts.length}</Count> 게시글</Sbutton>
+                <Link href={`/user/${me.id}`}><SLink><Count>{me.Posts.length}</Count> 게시글</SLink></Link>
                 <Sbutton onClick={showModal2}><Count>{me.Followers.length}</Count> 팔로워</Sbutton>
                 <Modal open={open2} width={330} title="팔로워" onOk={handleOk2} onCancel={handleCancel2} footer={[]}>
                     <div>{me.Followers.map((a) => (<Items key={a.id}>{a.email} <UnFollow header="팔로워" unfollow={a}/></Items>))}</div>
@@ -156,6 +148,10 @@ const Sbutton = styled.div`
     &:hover{  
         cursor: pointer;
     }
+`;
+const SLink = styled.a`
+    text-decoration: none;
+    font-size:14px;
 `;
 const Count = styled.span`
     font-weight:bold;

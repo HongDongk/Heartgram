@@ -5,7 +5,6 @@ import styled, { createGlobalStyle }  from 'styled-components';
 import { Input } from 'antd';
 import { HomeFilled , UserOutlined, HeartOutlined, HeartTwoTone, PlusSquareOutlined } from '@ant-design/icons';
 import { LOG_OUT_REQUEST } from '../reducers/user';
-import Router from "next/router";
 
 const Global = createGlobalStyle`
    a {
