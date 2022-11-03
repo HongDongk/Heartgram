@@ -11,7 +11,7 @@ import PostImages from './PostImages';
 import PostCardContent from './PostCardContent';
 import CommentForm from './CommentForm';
 import FollowButton from './FollowButton';
-import { REMOVE_POST_REQUEST, LIKE_POST_REQUEST, UNLIKE_POST_REQUEST, RETWEET_REQUEST } from '../reducers/post';
+import { REMOVE_POST_REQUEST, LIKE_POST_REQUEST, UNLIKE_POST_REQUEST, RETWEET_REQUEST, UPDATE_POST_REQUEST } from '../reducers/post';
 
 moment.locale('ko');
 
@@ -22,6 +22,7 @@ const PostCard = ({ post }) => {
     const [commentFormOpened, setCommentFormOpened] = useState(false);
     const { me } = useSelector((state) => state.user);
     const id = me && me.id;
+    const [editMode, setEditMode] = useState(false);
     
     const liked = post.Likers.find((v) => v.id === id);
 
@@ -44,6 +45,24 @@ const PostCard = ({ post }) => {
             data: post.id,
         });
     }, [id]);
+
+    const onClickUpdate = useCallback(() => {
+      setEditMode(true);
+    }, []);
+
+    const onCancelUpdate = useCallback(() => {
+      setEditMode(false);
+    }, []);
+
+    const onChangePost = useCallback((editText) => () => {
+      dispatch({
+          type: UPDATE_POST_REQUEST,
+          data: {
+              PostId: post.id,
+              content: editText,
+          },
+      });
+    }, [post]);
     
     const onToggleComment = useCallback(() => {
         setCommentFormOpened((prev) => !prev);
@@ -91,7 +110,7 @@ const PostCard = ({ post }) => {
                       {id && post.User.id === id
                         ? (
                           <>
-                            <Button>수정</Button>
+                            {!post.RetweetId && <Button onClick={onClickUpdate}>수정</Button>}
                             <Button type="danger" loading={removePostLoading} onClick={onRemovePost}>삭제</Button>
                           </>
                         )
@@ -109,19 +128,14 @@ const PostCard = ({ post }) => {
                     <User><Link href={`/user/${post.Retweet.User.id}`} prefetch={false}><a><Avatar>{post.Retweet.User.nickname[0]}</Avatar>&nbsp;&nbsp;&nbsp;{post.Retweet.User.nickname}</a></Link></User>
                     <SCard cover={ <PostImages images={post.Retweet.Images} /> }>
                       <Card.Meta 
-                        description={<div>
-                                        <PostCardContent postData={post.content} />
-                                        <Liker>👍 &nbsp;{post.Likers ? post.Likers.length : 0}개</Liker>
-                                        <Date>{moment(post.createdAt).format('YYYY.MM.DD')}</Date>
-                                     </div>
-                                    }
+                        description={<div><PostCardContent postData={post.Retweet.content} /></div>}
                       />
                     </SCard>
                 </RetweetBox>   
               ) : (
                 <Card.Meta
                   description={<div>
-                                  <PostCardContent postData={post.content} />
+                                  <PostCardContent editMode={editMode} onChangePost={onChangePost} onCancelUpdate={onCancelUpdate} postData={post.content}/>
                                   <Liker>👍 &nbsp;{post.Likers ? post.Likers.length : 0}개</Liker>
                                   <Date>{moment(post.createdAt).format('YYYY.MM.DD')}</Date>
                                </div>

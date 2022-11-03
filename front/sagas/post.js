@@ -7,6 +7,7 @@ import {
     LOAD_HASHTAG_POSTS_FAILURE, LOAD_HASHTAG_POSTS_REQUEST, LOAD_HASHTAG_POSTS_SUCCESS,
     LOAD_POSTS_FAILURE, LOAD_POSTS_REQUEST,LOAD_POSTS_SUCCESS,
     ADD_POST_FAILURE, ADD_POST_REQUEST, ADD_POST_SUCCESS,
+    UPDATE_POST_FAILURE, UPDATE_POST_REQUEST, UPDATE_POST_SUCCESS,
     REMOVE_POST_FAILURE, REMOVE_POST_REQUEST, REMOVE_POST_SUCCESS,
     UPLOAD_IMAGES_FAILURE, UPLOAD_IMAGES_REQUEST, UPLOAD_IMAGES_SUCCESS,
     LIKE_POST_FAILURE, LIKE_POST_REQUEST, LIKE_POST_SUCCESS,
@@ -124,6 +125,27 @@ function* addPost(action) {
       yield put({
         type: ADD_POST_FAILURE,
         data: err.response.data,
+      });
+    }
+}
+
+// 게시글 수정
+function updatePostAPI(data) {
+  return axios.patch(`/post/${data.PostId}`, data);
+}
+
+function* updatePost(action) {
+    try {
+      const result = yield call(updatePostAPI, action.data);
+      yield put({
+          type: UPDATE_POST_SUCCESS,
+          data: result.data,
+      });
+    } catch (err) {
+      console.error(err);
+      yield put({
+          type: UPDATE_POST_FAILURE,
+          error: err.response.data,
       });
     }
 }
@@ -278,6 +300,10 @@ function* watchLoadPosts() {
 function* watchAddPost() {
     yield takeLatest(ADD_POST_REQUEST, addPost);
 }
+
+function* watchUpdatePost() {
+  yield takeLatest(UPDATE_POST_REQUEST, updatePost);
+}
   
 function* watchRemovePost() {
     yield takeLatest(REMOVE_POST_REQUEST, removePost);
@@ -311,6 +337,7 @@ export default function* postSaga() {
       fork(watchLoadHashtagPosts),
       fork(watchLoadPosts),
       fork(watchAddPost),
+      fork(watchUpdatePost),
       fork(watchRemovePost),
       fork(watchUploadImages),
       fork(watchLikePost),

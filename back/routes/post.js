@@ -108,6 +108,32 @@ router.post('/', isLoggedIn, upload.none(), async (req, res, next) => { // POST 
     }
 });
 
+// 게시글 수정
+router.patch('/:postId', isLoggedIn, async (req, res, next) => { // PATCH /post/10
+    const hashtags = req.body.content.match(/#[^\s#]+/g);
+    try {
+        await Post.update({
+          content: req.body.content
+        }, {
+          where: {
+            id: req.params.postId,
+            UserId: req.user.id,
+          },
+      });
+      const post = await Post.findOne({ where: { id: req.params.postId }});
+      if (hashtags) {
+          const result = await Promise.all(hashtags.map((tag) => Hashtag.findOrCreate({
+            where: { name: tag.slice(1).toLowerCase() },
+          }))); 
+          await post.setHashtags(result.map((v) => v[0]));
+        }
+      res.status(200).json({ PostId: parseInt(req.params.postId, 10), content: req.body.content });
+    } catch (error) {
+      console.error(error);
+      next(error);
+    }
+});
+
 // 게시글 삭제
 router.delete('/:postId', isLoggedIn, async (req, res, next) => { // DELETE /post/10
     try {
