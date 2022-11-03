@@ -17,9 +17,6 @@ export const initialState = {
     signUpLoading: false, // 회원가입 시도중
     signUpDone: false,
     signUpError: null,
-    changeEmailLoading: false, // 이메일 변경 시도중
-    changeEmailDone: false,
-    changeEmailError: null,
     changeNicknameLoading: false, // 닉네임 변경 시도중
     changeNicknameDone: false,
     changeNicknameError: null,
@@ -61,10 +58,6 @@ export const LOG_OUT_FAILURE = 'LOG_OUT_FAILURE';
 export const SIGN_UP_REQUEST = 'SIGN_UP_REQUEST';
 export const SIGN_UP_SUCCESS = 'SIGN_UP_SUCCESS';
 export const SIGN_UP_FAILURE = 'SIGN_UP_FAILURE';
-
-export const CHANGE_EMAIL_REQUEST = 'CHANGE_EMAIL_REQUEST';
-export const CHANGE_EMAIL_SUCCESS = 'CHANGE_EMAIL_SUCCESS';
-export const CHANGE_EMAIL_FAILURE = 'CHANGE_EMAIL_FAILURE';
 
 export const CHANGE_NICKNAME_REQUEST = 'CHANGE_NICKNAME_REQUEST';
 export const CHANGE_NICKNAME_SUCCESS = 'CHANGE_NICKNAME_SUCCESS';
@@ -169,21 +162,6 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
         case SIGN_UP_FAILURE:
             draft.signUpLoading = false;
             draft.signUpError = action.error;
-            break;
-        // 이메일 변경
-        case CHANGE_EMAIL_REQUEST:
-            draft.changeEmailLoading = true;
-            draft.changeEmailError = null;
-            draft.changeEmailDone = false;
-            break;
-        case CHANGE_EMAIL_SUCCESS:
-            draft.changeEmailLoading = false;
-            draft.me.email = action.data.email;
-            draft.changeEmailDone = true;
-            break;
-        case CHANGE_EMAIL_FAILURE:
-            draft.changeEmailLoading = false;
-            draft.changeEmailError = action.error;
             break;
         // 닉네임 변경
         case CHANGE_NICKNAME_REQUEST:

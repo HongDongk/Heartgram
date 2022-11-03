@@ -6,7 +6,6 @@ import {
   LOG_IN_FAILURE, LOG_IN_REQUEST, LOG_IN_SUCCESS,
   LOG_OUT_FAILURE, LOG_OUT_REQUEST, LOG_OUT_SUCCESS,
   SIGN_UP_FAILURE, SIGN_UP_REQUEST, SIGN_UP_SUCCESS,
-  CHANGE_EMAIL_FAILURE, CHANGE_EMAIL_REQUEST,CHANGE_EMAIL_SUCCESS,
   CHANGE_NICKNAME_FAILURE, CHANGE_NICKNAME_REQUEST,CHANGE_NICKNAME_SUCCESS,
   LOAD_FOLLOWERS_FAILURE, LOAD_FOLLOWERS_REQUEST, LOAD_FOLLOWERS_SUCCESS, 
   LOAD_FOLLOWINGS_FAILURE, LOAD_FOLLOWINGS_REQUEST, LOAD_FOLLOWINGS_SUCCESS,
@@ -113,27 +112,6 @@ function* signUp(action) {
       });
     }
 }
-// 이메일 변경
-function changeEmailAPI(data) {
-  return axios.patch('/user/email', { email: data });
-}
-
-function* changeEmail(action) {
-  try {
-    const result = yield call(changeEmailAPI, action.data);
-    yield put({
-        type: CHANGE_EMAIL_SUCCESS,
-        data: result.data,
-    });
-  } catch (err) {
-    console.error(err);
-    yield put({
-        type: CHANGE_EMAIL_FAILURE,
-        error: err.response.data,
-    });
-  }
-}
-
 // 닉네임 변경
 function changeNicknameAPI(data) {
     return axios.patch('/user/nickname', { nickname: data });
@@ -275,10 +253,6 @@ function* watchSignUp() {
     yield takeLatest(SIGN_UP_REQUEST, signUp);
 }
 
-function* watchChangeEmail() {
-    yield takeLatest(CHANGE_EMAIL_REQUEST, changeEmail);
-}
-
 function* watchChangeNickname() {
     yield takeLatest(CHANGE_NICKNAME_REQUEST, changeNickname);
 }
@@ -311,7 +285,6 @@ export default function* userSaga() {
       fork(watchLogIn),
       fork(watchLogOut),
       fork(watchSignUp),
-      fork(watchChangeEmail),
       fork(watchChangeNickname),
       fork(watchLoadFollowers),
       fork(watchLoadFollowings),

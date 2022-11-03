@@ -5,15 +5,15 @@ import { RetweetOutlined, HeartTwoTone, HeartOutlined, MessageOutlined, Ellipsis
 import { useSelector, useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import Link from 'next/link';
+import moment from 'moment';
 
 import PostImages from './PostImages';
 import PostCardContent from './PostCardContent';
 import CommentForm from './CommentForm';
 import FollowButton from './FollowButton';
-
-
 import { REMOVE_POST_REQUEST, LIKE_POST_REQUEST, UNLIKE_POST_REQUEST, RETWEET_REQUEST } from '../reducers/post';
 
+moment.locale('ko');
 
 const PostCard = ({ post }) => {
     
@@ -73,7 +73,8 @@ const PostCard = ({ post }) => {
     return (
         <CardWrapper>
           <User>
-            <Link href={`/user/${post.User.id}`} prefetch={false}><a><Avatar>{post.User.nickname[0]}</Avatar>&nbsp;&nbsp;&nbsp;{post.User.nickname}</a></Link>{id && <FollowButton post={post} />}
+            <Link href={`/user/${post.User.id}`} prefetch={false}><a><Avatar>{post.User.nickname[0]}</Avatar>&nbsp;&nbsp;&nbsp;{post.User.nickname}</a></Link>
+            {id && <FollowButton post={post} />}      
           </User>
           <SCard 
             cover={ <PostImages images={post.Images} /> }
@@ -105,16 +106,26 @@ const PostCard = ({ post }) => {
           >
              {post.RetweetId && post.Retweet? (
                 <RetweetBox>
-                    <User><a><Avatar>{post.Retweet.User.nickname[0]}</Avatar>&nbsp;&nbsp;&nbsp;{post.Retweet.User.nickname}</a></User>
+                    <User><Link href={`/user/${post.Retweet.User.id}`} prefetch={false}><a><Avatar>{post.Retweet.User.nickname[0]}</Avatar>&nbsp;&nbsp;&nbsp;{post.Retweet.User.nickname}</a></Link></User>
                     <SCard cover={ <PostImages images={post.Retweet.Images} /> }>
                       <Card.Meta 
-                        description={<PostCardContent postData={post.Retweet.content} />}
+                        description={<div>
+                                        <PostCardContent postData={post.content} />
+                                        <Liker>👍 &nbsp;{post.Likers ? post.Likers.length : 0}개</Liker>
+                                        <Date>{moment(post.createdAt).format('YYYY.MM.DD')}</Date>
+                                     </div>
+                                    }
                       />
                     </SCard>
                 </RetweetBox>   
               ) : (
                 <Card.Meta
-                  description={<PostCardContent postData={post.content} />}
+                  description={<div>
+                                  <PostCardContent postData={post.content} />
+                                  <Liker>👍 &nbsp;{post.Likers ? post.Likers.length : 0}개</Liker>
+                                  <Date>{moment(post.createdAt).format('YYYY.MM.DD')}</Date>
+                               </div>
+                               }
                 />
               )}
           </SCard>
@@ -130,7 +141,7 @@ const PostCard = ({ post }) => {
                       <Comment
                         author={item.User.nickname}
                         avatar={(
-                          <Link href={{ pathname: '/user', query: { id: item.User.id } }} as={`/user/${item.User.id}`}>
+                          <Link href={`/user/${item.User.id}`} prefetch={false}>
                             <a><Avatar>{item.User.nickname[0]}</Avatar></a>
                           </Link>
                         )}
@@ -163,23 +174,27 @@ PostCard.propTypes = {
 export default PostCard;
 
 const CardWrapper = styled.div`
-    margin-bottom:25px;
-    background-color:white;
-    padding:0 20px;
-    border-radius:10px;
+  margin-bottom:25px;
+  background-color:white;
+  padding:0 20px;
+  border-radius:10px;
 `;
 
 const User = styled.div`
-    display:flex;
-    justify-content:space-between;
-    font-weight:bold;
-    height:50px;
-    padding-top: 12px;
-    margin-bottom: 10px;
-    padding-left: 8px;
-    & > a{
+  display:flex;
+  justify-content:space-between;
+  font-weight:bold;
+  height:50px;
+  padding-top: 12px;
+  margin-bottom: 10px;
+  padding-left: 8px;
+  & > a{
       font-size:13px;
-    }
+  }
+`;
+
+const Date = styled.div`
+    margin-top:8px;
 `;
 
 const SCard = styled(Card)`
@@ -196,3 +211,9 @@ const RetweetBox= styled.div`
     background-color:#F8F8FF;
     border-radius:10px;
 `;
+
+const Liker= styled.div`
+    color: black;
+    margin-top:50px;
+`; 
+

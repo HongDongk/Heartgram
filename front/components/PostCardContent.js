@@ -30,6 +30,9 @@ const CardContent = styled.div`
 `;    
 
 const SLink = styled.a`
-    font-size:20px;
+    font-size:17px;
     color: #1E90FF;
+    :hover{  
+        color:#E6E6FA;
+    }
 `;

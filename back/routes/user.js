@@ -194,20 +194,6 @@ router.post('/', isNotLoggedIn, async (req, res, next) => { // POST /user/
         next(error); // status 500
     }   
 });
-//이메일 수정
-router.patch('/email', isLoggedIn, async (req, res, next) => {
-  try {
-    await User.update({
-      email: req.body.email,
-    }, {
-      where: { id: req.user.id },
-    });
-    res.status(200).json({ email: req.body.email });
-  } catch (error) {
-    console.error(error);
-    next(error);
-  }
-});
 //닉네임 수정
 router.patch('/nickname', isLoggedIn, async (req, res, next) => {
     try {

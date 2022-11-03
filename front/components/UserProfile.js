@@ -3,41 +3,33 @@ import { Button, Modal, Form, Input } from 'antd';
 import { useSelector, useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import Link from 'next/link';
+import { EditFilled } from '@ant-design/icons';
 
 import modal from '../hooks/modal';
 import UnFollow from './UnFollow';
 import useInput from '../hooks/useInput';
-import { CHANGE_EMAIL_REQUEST, CHANGE_NICKNAME_REQUEST } from '../reducers/user';
+import { CHANGE_NICKNAME_REQUEST } from '../reducers/user';
 
 const UserProfile = () => {
 
     const dispatch = useDispatch();
-    const [email, onChangeEmail, setEmail] = useInput('');
     const [nickname, onChangeNickname, setNickname] = useInput('');
-    const { changeEmailDone, changeNicknameDone, me } = useSelector((state) => state.user);
+    const { me, changeNicknameDone } = useSelector((state) => state.user);
+
+    useEffect(() => {
+        if (changeNicknameDone) {
+            setNickname('');
+        }
+    }, [changeNicknameDone]);
 
     const onSubmit = useCallback(() => {
-        dispatch({
-            type: CHANGE_EMAIL_REQUEST,
-            data: email,
-        });
         dispatch({
             type: CHANGE_NICKNAME_REQUEST,
             data: nickname,
         });
         handleCancel();
-    }, [email, nickname]);
+    }, [nickname]);
     
-    useEffect(() => {
-        if (changeEmailDone) {
-            setEmail('');
-        }
-        if (changeNicknameDone) {
-            setNickname('');
-        }
-
-    }, [changeEmailDone, changeNicknameDone]);
-
     const [open, showModal, handleOk, handleCancel] = modal(false);
     const [open2, showModal2, handleOk2, handleCancel2] = modal(false);
     const [open3, showModal3, handleOk3, handleCancel3] = modal(false);
@@ -46,43 +38,29 @@ const UserProfile = () => {
         <div>{me && <Profile>
             <Avatar>{me.nickname[0]}</Avatar>
             <Email>{me.email}</Email>
-            <Top>
-                <Button onClick={showModal}>Edit Profile</Button>
-                <SModal 
-                    open={open} 
-                    title="프로필 수정하기" 
-                    onOk={handleOk} 
-                    onCancel={handleCancel}
-                    footer={[<Button key="back" onClick={handleCancel}>
-                                뒤로가기
-                             </Button>,
-                             <Button key="submit" type="primary" onClick={onSubmit} htmlType="submit">
-                                수정하기
-                             </Button>
-                           ]}
-                >
-                    <FormWrapper layout="vertical" autoComplete="off">
-                        <Form.Item label="이메일 수정" name="changeemail">
-                            <SInput 
-                                name="user-email" 
-                                defaultValue={me.email} 
-                                type="email" 
-                                value={email} 
-                                onChange={onChangeEmail} 
-                            />
-                        </Form.Item>
-                        <Form.Item label="닉네임 수정" name="changenickname">
-                            <SInput 
-                                name="user-nickname" 
-                                defaultValue={me.nickname}
-                                type="string" 
-                                value={nickname} 
-                                onChange={onChangeNickname} 
-                            />
-                        </Form.Item>
+            <Nickname>{me.nickname}<Sbutton2 onClick={showModal}><EditFilled /></Sbutton2></Nickname> 
+            <SModal 
+                open={open} 
+                title="닉네임 수정하기" 
+                onOk={handleOk} 
+                onCancel={handleCancel}
+                footer={[]}
+                width={500}
+                >             
+                    <FormWrapper autoComplete="off">
+                        <SInput 
+                            name="user-nickname" 
+                            placeholder={me.nickname}
+                            type="string" 
+                            value={nickname} 
+                            onChange={onChangeNickname} 
+                        />                      
+                        {(nickname.length ==0) ? 
+                            <Submit disabled key="submit" type="primary" onClick={onSubmit} htmlType="submit">수정하기</Submit> :
+                            <Submit key="submit" type="primary" onClick={onSubmit} htmlType="submit">수정하기</Submit>
+                        }
                     </FormWrapper>
-                </SModal>        
-            </Top>
+            </SModal>        
             <Info>
                 <Link href={`/user/${me.id}`}><SLink><Count>{me.Posts.length}</Count> 게시글</SLink></Link>
                 <Sbutton onClick={showModal2}><Count>{me.Followers.length}</Count> 팔로워</Sbutton>
@@ -124,10 +102,18 @@ const Avatar = styled.div`
         cursor: pointer;
     }
 `;
-const Top= styled.div`
+const Nickname= styled.div`
     display:flex;
+    height:25px;
+    font-size:15px;
+    font-weight:bold;
     justify-content:center;
+    align-items:center;
     width:100%;
+`;
+const Submit = styled(Button)`
+    margin-top:15px;
+    margin-left:160px;
 `;
 const Email =styled.div`
     width:100%;
@@ -145,6 +131,14 @@ const Info = styled.div`
 const Sbutton = styled.div`
     border: 0;
     outline: 0;
+    &:hover{  
+        cursor: pointer;
+    }
+`;
+const Sbutton2 = styled.div`
+    margin-left:10px;
+    font-size:18px;
+    color:grey;
     &:hover{  
         cursor: pointer;
     }
@@ -170,9 +164,9 @@ const Items = styled.div`
     margin-bottom:10px;
 `;
 const SInput=styled(Input)`
-    width:350px;
+    width:250px;
     border-radius:6px;  
 `;
 const FormWrapper=styled(Form)`
-    width:350px;
+    width:250px;
 `;
