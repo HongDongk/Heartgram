@@ -13,7 +13,6 @@ import CommentForm from './CommentForm';
 import FollowButton from './FollowButton';
 import { REMOVE_POST_REQUEST, LIKE_POST_REQUEST, UNLIKE_POST_REQUEST, RETWEET_REQUEST, UPDATE_POST_REQUEST } from '../reducers/post';
 
-moment.locale('ko');
 
 const PostCard = ({ post }) => {
     

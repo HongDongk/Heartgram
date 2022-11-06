@@ -4,7 +4,7 @@ import Router, { useRouter } from 'next/router';
 import { useSelector, useDispatch } from 'react-redux';
 import styled, { createGlobalStyle }  from 'styled-components';
 import { Input } from 'antd';
-import { HomeFilled , UserOutlined, HeartOutlined, HeartTwoTone, PlusSquareOutlined } from '@ant-design/icons';
+import { HomeFilled , UserOutlined, PlusSquareOutlined } from '@ant-design/icons';
 
 import { LOG_OUT_REQUEST } from '../reducers/user';
 import useInput from '../hooks/useInput';
@@ -24,10 +24,9 @@ const Global = createGlobalStyle`
 
 const TopMenu = () => {
 
-    const { me, logOutError } = useSelector((state) => state.user);
+    const { me, logOutError , logOutDone } = useSelector((state) => state.user);
     const [searchInput, onChangeSearchInput] = useInput('');
     const dispatch = useDispatch();
-    const [liked, setLiked] = useState(false);
 
     const onSearch = useCallback(() => {
         Router.push(`/hashtag/${searchInput}`);
@@ -40,16 +39,16 @@ const TopMenu = () => {
     }, []);
 
     useEffect(() => {
+        if (logOutDone) {
+            Router.replace('/');
+        }
+    }, [logOutDone]);
+
+    useEffect(() => {
         if (logOutError) {
             alert(logOutError);
         }
     }, [logOutError]);
-
-
-    const HeartClick = useCallback(() => {
-        setLiked((prev) => !prev);
-      }, [liked]);
-
     
     return (
         <div>
@@ -62,7 +61,6 @@ const TopMenu = () => {
                 {me &&
                     <Util>
                         <TopItem><Link href="/main"><a><HomeFilled /></a></Link></TopItem>
-                        <TopItem>{liked ? <Heart twoToneColor="red" onClick={HeartClick} /> : <HeartEmpty onClick={HeartClick}/>}</TopItem>
                         <TopItem><Link href="/postupdate"><a><PlusSquareOutlined /></a></Link></TopItem>
                         <TopItem><Link href="/profile"><a><UserOutlined /></a></Link></TopItem>      
                     </Util> 
@@ -96,7 +94,7 @@ const SearchBox = styled(Input.Search)`
     
 `;
 const Util = styled.div`
-    width:200px;
+    width:150px;
     min-width:150px;
     display:flex;
     justify-content:center;
@@ -127,14 +125,3 @@ const Logo = styled.div`
         cursor: pointer;
     }
 `;
-const Heart = styled(HeartTwoTone)`
-    margin-top:4px;
-    font-size:25px;
-`;
-
-const HeartEmpty = styled(HeartOutlined)`
-    margin-top:4px;
-    font-size:25px;
-    color: #696969;
-`;
-
