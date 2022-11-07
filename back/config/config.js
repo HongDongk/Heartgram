@@ -13,7 +13,7 @@ module.exports = {
   },
   "test": {
     "username": "root",
-    "password": "1234",
+    "password": "Winner1201!",
     "database": process.env.DB_PASSWORD,
     "host": "127.0.0.1",
     "dialect": "mysql"
