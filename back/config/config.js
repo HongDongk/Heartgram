@@ -20,7 +20,7 @@ module.exports = {
   },
   "production": {
     "username": "root",
-    "password": null,
+    "password": "Winner1201!",
     "database": process.env.DB_PASSWORD,
     "host": "127.0.0.1",
     "dialect": "mysql"
