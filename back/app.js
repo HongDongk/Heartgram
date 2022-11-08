@@ -33,7 +33,7 @@ if (process.env.NODE_ENV === 'production') {
   app.use(morgan('dev'));
 }
 app.use(cors({
-    origin: ['http://localhost:3060', 'heartgram.com', 'http://3.34.45.194'],
+    origin: ['http://localhost:3060', 'heartgram.com', 'http://43.201.18.106/'],
     credentials: true,
 }));
 app.use('/', express.static(path.join(__dirname, 'uploads'))); // 이미지 미리보기
