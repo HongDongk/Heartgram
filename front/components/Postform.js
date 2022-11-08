@@ -5,6 +5,7 @@ import styled from 'styled-components';
 
 import { ADD_POST_REQUEST, UPLOAD_IMAGES_REQUEST, REMOVE_IMAGE } from '../reducers/post';
 import useInput from '../hooks/useInput';
+import { backUrl } from '../config/config';
 
 const PostForm = () => {
     
@@ -71,7 +72,7 @@ const PostForm = () => {
         <Preview>
           {imagePaths.map((v,i) => (
             <Items key={v}>
-              <img src={`http://localhost:3065/${v}`} style={{ width: '200px'}} alt={v} />
+              <img src={`${backUrl}/${v}`} style={{ width: '200px'}} alt={v} />
               <Cancel>
                 <Button onClick={onRemoveImage(i)}>취소</Button>
               </Cancel>

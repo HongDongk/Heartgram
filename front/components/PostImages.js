@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import Slick from 'react-slick';
+import { backUrl } from '../config/config';
 
 
 const PostImages = ({ images }) => {
@@ -18,7 +19,7 @@ const PostImages = ({ images }) => {
     return (
         <Pictures>
             <Slick {...settings}>
-                {images.map((v) => (<img key={v.src} src={`http://localhost:3065/${v.src}`} alt={v.src} />))}
+                {images.map((v) => (<img key={v.src} src={`${backUrl}/${v.src}`} alt={v.src} />))}
             </Slick>
         </Pictures>
     );
